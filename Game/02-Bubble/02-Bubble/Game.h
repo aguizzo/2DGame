@@ -3,6 +3,7 @@
 
 
 #include "Scene.h"
+#include "Menu.h"
 
 
 #define SCREEN_WIDTH 1350
@@ -29,6 +30,7 @@ public:
 	void init();
 	bool update(int deltaTime);
 	void render();
+	void changeState(char c);
 	
 	// Input callback methods
 	void keyPressed(int key);
@@ -43,11 +45,12 @@ public:
 	bool getSpecialKey(int key) const;
 
 private:
+	int State;
 	bool bPlay;                       // Continue to play game?
 	Scene scene;                      // Scene to render
 	bool keys[256], specialKeys[256]; // Store key states so that 
 	                                  // we can have access at any time
-
+	Menu menu;
 };
 
 

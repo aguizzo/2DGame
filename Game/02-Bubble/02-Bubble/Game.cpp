@@ -3,16 +3,29 @@
 #include "Game.h"
 
 
+enum State {
+	MENU, SCENE
+};
+
 void Game::init()
 {
 	bPlay = true;
 	glClearColor(0.f, 1.f, 1.f, 1.0f);
+	State = MENU;
 	scene.init();
+	menu.init();
 }
 
 bool Game::update(int deltaTime)
 {
-	scene.update(deltaTime);
+	switch (State) 
+	{
+	case MENU:
+		menu.update(deltaTime);
+		break;
+	case SCENE:
+		scene.update(deltaTime);
+	}
 	
 	return bPlay;
 }
@@ -20,7 +33,28 @@ bool Game::update(int deltaTime)
 void Game::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	scene.render();
+	switch (State)
+	{
+	case MENU:
+		menu.render();
+		break;
+	case SCENE: 
+		scene.render();
+	}
+	
+}
+
+void Game::changeState(char c)
+{
+	switch (c) 
+	{
+	case 'M': 
+		State = MENU;
+		break;
+	case 'S':
+		State = SCENE;
+		break;
+	}
 }
 
 void Game::keyPressed(int key)
