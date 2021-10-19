@@ -5,7 +5,7 @@
 #include "Scene.h"
 
 
-#define SCREEN_WIDTH 1296
+#define SCREEN_WIDTH 2592
 #define SCREEN_HEIGHT 1008
 
 

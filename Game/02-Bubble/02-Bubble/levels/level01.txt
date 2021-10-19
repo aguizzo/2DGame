@@ -1,33 +1,33 @@
 TILEMAP
-36 28 							-- Size of tile map in tiles
+72 28 							-- Size of tile map in tiles
 36 36 							-- Tile size & block size
 images/suelo.png 					-- Tilesheet
 3  4							-- Number of tiles in tilesheet
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-        abbbbbbbbbbbbbbbbbbc        
-        ghhhhhhhhhhhhhhhhhhi        
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+        abbbbbc                                                         
+        ghhhhhi                                                         
+                                                                        
+                                  abbbbbc                               
+                                  ghhhhhi                               
+                                                                        
+        abbbbbbbbbbbbbbbbbbc                                            
+        ghhhhhhhhhhhhhhhhhhi                                            
+        abbbbbbbbbbbbbbbbbbc                                            
+        ghhhhhhhhhhhhhhhhhhi                                            
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
+                                                                        
