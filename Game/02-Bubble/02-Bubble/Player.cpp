@@ -115,52 +115,99 @@ void Player::update(int deltaTime)
 	
 	if(bJumping)
 	{
-		if ((sprite->animation() == MOVE_LEFT) || (sprite->animation() == STAND_LEFT))
-			sprite->changeAnimation(JUMP_LEFT);
-		else if ((sprite->animation() == MOVE_RIGHT) || (sprite->animation() == STAND_RIGHT))
-			sprite->changeAnimation(JUMP_RIGHT);
-		if(this->inverted) jumpAngle -= JUMP_ANGLE_STEP;
-		else jumpAngle += JUMP_ANGLE_STEP;
-		if (jumpAngle<90 && map->collisionMoveUp(posPlayer, glm::ivec2(72, 72), &posPlayer.y)) {
-			jumpAngle = 180-jumpAngle;
+		if (this->inverted) {
+			if ((sprite->animation() == MOVE_LEFT) || (sprite->animation() == STAND_LEFT))
+				sprite->changeAnimation(JUMP_LEFT);
+			else if ((sprite->animation() == MOVE_RIGHT) || (sprite->animation() == STAND_RIGHT))
+				sprite->changeAnimation(JUMP_RIGHT);
+			jumpAngle += JUMP_ANGLE_STEP;
+			if (jumpAngle < 90 && map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y)) {
+				jumpAngle = 180 - jumpAngle;
 
+			}
+			else if (jumpAngle == 180)
+			{
+
+				bJumping = false;
+				posPlayer.y = startY;
+			}
+			else
+			{
+				posPlayer.y = int(startY + JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
+				if (jumpAngle > 90) {
+					bJumping = !map->collisionMoveUp(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+				}
+			}
 		}
-		else if(jumpAngle == 180)
-		{
-			
-			bJumping = false;
-			posPlayer.y = startY;
-		}
-		else
-		{
-			if(this->inverted) posPlayer.y = int(startY + JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
-			else posPlayer.y = int(startY - JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
-			if(jumpAngle > 90)
-				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+		else {
+			if ((sprite->animation() == MOVE_LEFT) || (sprite->animation() == STAND_LEFT))
+				sprite->changeAnimation(JUMP_LEFT);
+			else if ((sprite->animation() == MOVE_RIGHT) || (sprite->animation() == STAND_RIGHT))
+				sprite->changeAnimation(JUMP_RIGHT);
+			jumpAngle += JUMP_ANGLE_STEP;
+			if (jumpAngle < 90 && map->collisionMoveUp(posPlayer, glm::ivec2(72, 72), &posPlayer.y)) {
+				jumpAngle = 180 - jumpAngle;
+
+			}
+			else if (jumpAngle == 180)
+			{
+
+				bJumping = false;
+				posPlayer.y = startY;
+			}
+			else
+			{
+				posPlayer.y = int(startY - JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
+				if (jumpAngle > 90)
+					bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+			}
 		}
 	}
 	else
 	{
-		if(this->inverted) posPlayer.y -= FALL_STEP;
-		else posPlayer.y += FALL_STEP;
-		if(map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y))
-		{
-			if (sprite->animation() == JUMP_LEFT)
-				sprite->changeAnimation(STAND_LEFT);
-			else if (sprite->animation() == JUMP_RIGHT)
-				sprite->changeAnimation(STAND_RIGHT);
-			if(Game::instance().getSpecialKey(GLUT_KEY_UP))
+		if (this->inverted) {
+			posPlayer.y -= FALL_STEP;
+			if (map->collisionMoveUp(posPlayer, glm::ivec2(72,72), &posPlayer.y))
 			{
-				bJumping = true;
-				jumpAngle = 0;
-				startY = posPlayer.y;
+				if (sprite->animation() == JUMP_LEFT)
+					sprite->changeAnimation(STAND_LEFT);
+				else if (sprite->animation() == JUMP_RIGHT)
+					sprite->changeAnimation(STAND_RIGHT);
+				if (Game::instance().getSpecialKey(GLUT_KEY_UP))
+				{
+					bJumping = true;
+					jumpAngle = 0;
+					startY = posPlayer.y;
+				}
+			}
+			else {
+				if (sprite->animation() == STAND_LEFT)
+					sprite->changeAnimation(JUMP_LEFT);
+				else if (sprite->animation() == STAND_RIGHT)
+					sprite->changeAnimation(JUMP_RIGHT);
 			}
 		}
 		else {
-			if (sprite->animation() == STAND_LEFT)
-				sprite->changeAnimation(JUMP_LEFT);
-			else if (sprite->animation() == STAND_RIGHT)
-				sprite->changeAnimation(JUMP_RIGHT);
+			posPlayer.y += FALL_STEP;
+			if (map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y))
+			{
+				if (sprite->animation() == JUMP_LEFT)
+					sprite->changeAnimation(STAND_LEFT);
+				else if (sprite->animation() == JUMP_RIGHT)
+					sprite->changeAnimation(STAND_RIGHT);
+				if (Game::instance().getSpecialKey(GLUT_KEY_UP))
+				{
+					bJumping = true;
+					jumpAngle = 0;
+					startY = posPlayer.y;
+				}
+			}
+			else {
+				if (sprite->animation() == STAND_LEFT)
+					sprite->changeAnimation(JUMP_LEFT);
+				else if (sprite->animation() == STAND_RIGHT)
+					sprite->changeAnimation(JUMP_RIGHT);
+			}
 		}
 	}
 	
