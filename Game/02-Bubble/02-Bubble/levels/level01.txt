@@ -15,8 +15,8 @@ images/suelo.png 					-- Tilesheet
                                   ghhhhhi                               
                                                                         
         abbbbbbbbbbbbbbbbbbc                                            
-        ghhhhhhhhhhhhhhhhhhi                                            
-        abbbbbbbbbbbbbbbbbbc                                            
+        deeeeeeeeeeeeeeeeeef                                            
+        deeeeeeeeeeeeeeeeeef                                            
         ghhhhhhhhhhhhhhhhhhi                                            
                                                                         
                                                                         
