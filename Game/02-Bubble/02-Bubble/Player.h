@@ -23,6 +23,7 @@ public:
 	
 private:
 	bool bJumping;
+	bool fstjump = true;
 	bool inverted;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;

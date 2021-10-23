@@ -6,9 +6,9 @@
 #include "Game.h"
 
 
-#define JUMP_ANGLE_STEP 3
-#define JUMP_HEIGHT 150
-#define FALL_STEP 4
+#define JUMP_ANGLE_STEP 4
+#define JUMP_HEIGHT 162
+#define FALL_STEP 6
 
 
 enum PlayerAnims
@@ -78,6 +78,9 @@ void Player::init(const glm::ivec2 &tileMapPos, bool inv, ShaderProgram &shaderP
 
 void Player::update(int deltaTime)
 {
+	if (!fstjump && !Game::instance().getSpecialKey(GLUT_KEY_UP)) {
+		fstjump = true;
+	}
 	sprite->update(deltaTime);
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
 	{
@@ -115,13 +118,13 @@ void Player::update(int deltaTime)
 	
 	if(bJumping)
 	{
-		if (this->inverted) {
+		if (inverted) {
 			if ((sprite->animation() == MOVE_LEFT) || (sprite->animation() == STAND_LEFT))
 				sprite->changeAnimation(JUMP_LEFT);
 			else if ((sprite->animation() == MOVE_RIGHT) || (sprite->animation() == STAND_RIGHT))
 				sprite->changeAnimation(JUMP_RIGHT);
 			jumpAngle += JUMP_ANGLE_STEP;
-			if (jumpAngle < 90 && map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y)) {
+			if (jumpAngle < 90 && map->collisionMoveUpInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y)) {
 				jumpAngle = 180 - jumpAngle;
 
 			}
@@ -135,7 +138,7 @@ void Player::update(int deltaTime)
 			{
 				posPlayer.y = int(startY + JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
 				if (jumpAngle > 90) {
-					bJumping = !map->collisionMoveUp(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+					bJumping = !map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
 				}
 			}
 		}
@@ -165,17 +168,18 @@ void Player::update(int deltaTime)
 	}
 	else
 	{
-		if (this->inverted) {
+		if (inverted) {
 			posPlayer.y -= FALL_STEP;
-			if (map->collisionMoveUp(posPlayer, glm::ivec2(72,72), &posPlayer.y))
+			if (map->collisionMoveDownInv(posPlayer, glm::ivec2(72,72), &posPlayer.y))
 			{
 				if (sprite->animation() == JUMP_LEFT)
 					sprite->changeAnimation(STAND_LEFT);
 				else if (sprite->animation() == JUMP_RIGHT)
 					sprite->changeAnimation(STAND_RIGHT);
-				if (Game::instance().getSpecialKey(GLUT_KEY_UP))
+				if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
 				{
 					bJumping = true;
+					fstjump = false;
 					jumpAngle = 0;
 					startY = posPlayer.y;
 				}
@@ -195,9 +199,10 @@ void Player::update(int deltaTime)
 					sprite->changeAnimation(STAND_LEFT);
 				else if (sprite->animation() == JUMP_RIGHT)
 					sprite->changeAnimation(STAND_RIGHT);
-				if (Game::instance().getSpecialKey(GLUT_KEY_UP))
+				if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
 				{
 					bJumping = true;
+					fstjump = false;
 					jumpAngle = 0;
 					startY = posPlayer.y;
 				}
@@ -212,6 +217,10 @@ void Player::update(int deltaTime)
 	}
 	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+	if (inverted) if (posPlayer.y < (SCREEN_HEIGHT / 2))
+		Game::instance().init();
+	else if (posPlayer.y > (SCREEN_HEIGHT / 2))  //la posición del player normal da un valor que no debería, el invertido va bien. Si quitas comentas estas lineas el juego va bien
+		Game::instance().init(); 
 }
 
 void Player::render()

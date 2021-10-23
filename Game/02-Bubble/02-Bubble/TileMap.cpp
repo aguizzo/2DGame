@@ -186,8 +186,8 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 {
 	int x0, x1, y;
 	
-	x0 = pos.x / tileSize;
-	x1 = (pos.x + size.x - 1) / tileSize;
+	x0 = (pos.x + 15) / tileSize;
+	x1 = (pos.x + size.x - 15) / tileSize;
 	y = (pos.y + size.y - 1) / tileSize;
 	for(int x=x0; x<=x1; x++)
 	{
@@ -204,20 +204,21 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	return false;
 }
 
+
 bool TileMap::collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
 {
 	int x0, x1, y;
 
 	x0 = pos.x / tileSize;
 	x1 = (pos.x + size.x - 1) / tileSize;
-	y = (pos.y - tileSize + 1) / tileSize;
+	y = (pos.y - tileSize + 1) / tileSize +1;
 	for (int x = x0; x <= x1; x++)
 	{
 		if (map[y * mapSize.x + x] != 0)
 		{
-			if (*posY - size.y - tileSize * (y+1) <= 6)
+			if (*posY - size.y - tileSize * (y-1) <= 6)
 			{
-				*posY = tileSize * (y-1) + size.y + 6;
+				*posY = tileSize * (y-1) + size.y;
 				return true;
 			}
 		}
@@ -226,6 +227,52 @@ bool TileMap::collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int
 	return false;
 }
 
+
+bool TileMap::collisionMoveUpInv(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
+{
+	int x0, x1, y;
+
+	x0 = pos.x / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y - 1) / tileSize;
+	for (int x = x0; x <= x1; x++)
+	{
+		if (map[y * mapSize.x + x] != 0)
+		{
+			if (*posY - tileSize * y + size.y <= 6)
+			{
+				*posY = tileSize * y - size.y;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool TileMap::collisionMoveDownInv(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
+{
+	int x0, x1, y;
+
+	x0 = (pos.x + 15)/ tileSize;
+	x1 = (pos.x + size.x - 15) / tileSize;
+	y = ((pos.y - size.y + 10) / tileSize + 1);
+	for (int x = x0; x <= x1; x++)
+	{
+		
+		if (map[y * mapSize.x + x] != 0)
+		{
+			
+			if (*posY - size.y - tileSize * (y-1) <= 6)
+			{
+				*posY = tileSize * (y-1) + size.y;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
 
 
 

@@ -8,6 +8,7 @@ images/suelo.png 					-- Tilesheet
                                                         
                                                         
                                                         
+                                                        
         abbbbbc                                         
         ghhhhhi                                         
                                                         
@@ -19,12 +20,11 @@ images/suelo.png 					-- Tilesheet
         deeeeeeeeeeeeeeeeeef                            
         ghhhhhhhhhhhhhhhhhhi                            
                                                         
+                                  abbbbbc               
+                                  ghhhhhi               
                                                         
-                                                        
-                                                        
-                                                        
-                                                        
-                                                        
+        abbbbbc                                         
+        ghhhhhi                                         
                                                         
                                                         
                                                         
