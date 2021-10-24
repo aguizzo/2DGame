@@ -9,7 +9,7 @@
 #define SCREEN_Y 0
 
 #define INIT_PLAYER_X_TILES 18
-#define INIT_PLAYER_Y_TILES 7
+#define INIT_PLAYER_Y_TILES 9
 
 
 Scene::Scene()
@@ -51,6 +51,7 @@ void Scene::update(int deltaTime)
 	currentTime += deltaTime;
 	player->update(deltaTime);
 	player2->update(deltaTime);
+	if ((player->getPosition().y > SCREEN_HEIGHT / 2) || (player2->getPosition().y < SCREEN_HEIGHT / 2)) init();
 }
 
 void Scene::render()

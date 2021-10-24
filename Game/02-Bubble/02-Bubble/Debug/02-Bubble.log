@@ -1,4 +1,8 @@
-﻿  Player.cpp
+﻿  Scene.cpp
+  main.cpp
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\main.cpp(89,52): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\main.cpp(89,33): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+  Generando código...
 SOIL.lib(image_DXT.obj) : warning LNK4099: no se encontró PDB 'vc100.pdb' con 'SOIL.lib(image_DXT.obj)' o en 'C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\Debug\vc100.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
 SOIL.lib(image_helper.obj) : warning LNK4099: no se encontró PDB 'vc100.pdb' con 'SOIL.lib(image_helper.obj)' o en 'C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\Debug\vc100.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
 SOIL.lib(SOIL.obj) : warning LNK4099: no se encontró PDB 'vc100.pdb' con 'SOIL.lib(SOIL.obj)' o en 'C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\Debug\vc100.pdb'; se vinculará el objeto sin tener en cuenta información de depuración

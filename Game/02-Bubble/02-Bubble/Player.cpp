@@ -215,12 +215,7 @@ void Player::update(int deltaTime)
 			}
 		}
 	}
-	
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-	if (inverted) if (posPlayer.y < (SCREEN_HEIGHT / 2))
-		Game::instance().init();
-	else if (posPlayer.y > (SCREEN_HEIGHT / 2))  //la posición del player normal da un valor que no debería, el invertido va bien. Si quitas comentas estas lineas el juego va bien
-		Game::instance().init(); 
 }
 
 void Player::render()
