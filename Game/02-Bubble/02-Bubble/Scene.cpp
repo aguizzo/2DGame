@@ -64,8 +64,7 @@ void Scene::update(int deltaTime)
 	player->update(deltaTime);
 	player2->update(deltaTime);
 	if ((player->getPosition().y > SCREEN_HEIGHT / 2) || (player2->getPosition().y < SCREEN_HEIGHT / 2)) init();
-	player->currentPosition();
-	glm::vec2 currPos = player->currentPosition();
+	glm::vec2 currPos = player->getPosition();
 	bool win = false;
 	if (currPos.x >= 11 * map->getTileSize() && currPos.x <= 13 * map->getTileSize())
 		win = true;
