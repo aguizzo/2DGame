@@ -6,8 +6,8 @@
 #include "Menu.h"
 
 
-#define SCREEN_WIDTH 1350
-#define SCREEN_HEIGHT 1080
+#define SCREEN_WIDTH 1800
+#define SCREEN_HEIGHT 1000
 
 
 // Game is a singleton (a class with a single instance) that represents our whole application

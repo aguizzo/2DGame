@@ -14,16 +14,18 @@ class Player
 {
 
 public:
-	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
+	void init(const glm::ivec2 &tileMapPos, bool inverted, ShaderProgram &shaderProgram);
 	void update(int deltaTime);
 	void render();
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
-	glm::vec2 currentPosition();
+	glm::vec2 getPosition() { return posPlayer; }
 	
 private:
 	bool bJumping;
+	bool fstjump = true;
+	bool inverted;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, startY;
 	Texture spritesheet;
