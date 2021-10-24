@@ -26,6 +26,8 @@ public:
 
 private:
 	void initShaders();
+	void setPlayers();
+	void setFlags();
 
 private:
 	TileMap *map;
@@ -35,7 +37,7 @@ private:
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
-
+	int SceneState;
 };
 
 

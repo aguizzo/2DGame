@@ -19,7 +19,7 @@ enum FlagAnims
 
 void Flag::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
-	spritesheet.loadFromFile("images/flag2.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheet.loadFromFile("images/flag.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(36,72), glm::vec2(0.5, 1), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(2);
 

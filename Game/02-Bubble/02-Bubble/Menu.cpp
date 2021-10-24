@@ -6,11 +6,11 @@
 #include "Menu.h"
 #include "Game.h"
 
-#define SCREEN_X 32
-#define SCREEN_Y 16
+#define SCREEN_X 0
+#define SCREEN_Y 0
 
 #define INIT_PLAYER_X_TILES 18
-#define INIT_PLAYER_Y_TILES 14
+#define INIT_PLAYER_Y_TILES 9
 
 Menu::Menu()
 {
@@ -38,9 +38,9 @@ void Menu::init()
 	bgImage.loadFromFile("images/sisao.png",
 		TEXTURE_PIXEL_FORMAT_RGBA);*/
 
-	map = TileMap::createTileMap("levels/level00.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	map = TileMap::createTileMap("levels/menu.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	player = new Player();
-	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), false ,texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
 
