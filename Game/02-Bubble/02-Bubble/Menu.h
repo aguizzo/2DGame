@@ -1,6 +1,8 @@
 #ifndef _MENU_INCLUDE
 #define _MENU_INCLUDE
 #include "TexturedQuad.h"
+#include "TileMap.h"
+#include "Player.h"
 
 class Menu
 {
@@ -21,6 +23,8 @@ private:
 	TexturedQuad* background;
 	glm::mat4 projection;
 	Texture bgImage;
+	TileMap *map;
+	Player *player;
 };
 
 

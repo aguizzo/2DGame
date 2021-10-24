@@ -12,8 +12,8 @@ void Game::init()
 	bPlay = true;
 	glClearColor(0.f, 1.f, 1.f, 1.0f);
 	State = MENU;
-	scene.init();
 	menu.init();
+	scene.init();
 }
 
 bool Game::update(int deltaTime)
