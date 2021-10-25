@@ -12,7 +12,7 @@ class Flag
 {
 
 public:
-	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram);
+	void init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram, bool inv);
 	void update(int deltaTime, bool win);
 	void render();
 

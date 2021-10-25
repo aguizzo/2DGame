@@ -14,9 +14,12 @@
 #define FLAG_X 15
 #define FLAG_Y 10
 
+#define FLAG2_X 23
+#define FLAG2_Y 17
+
 
 enum SceneState {
-	WON, FLAG1, FLAG2
+	WON, PLAYING
 };
 
 
@@ -26,6 +29,7 @@ Scene::Scene()
 	player = NULL;
 	player2 = NULL;
 	flag = NULL;
+	flag2 = NULL;
 }
 
 Scene::~Scene()
@@ -44,6 +48,7 @@ Scene::~Scene()
 void Scene::init()
 {
 	initShaders();
+	SceneState = PLAYING;
 	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	setPlayers();
 	setFlags();
@@ -53,21 +58,39 @@ void Scene::init()
 
 void Scene::update(int deltaTime)
 {
-	currentTime += deltaTime;
-	player->update(deltaTime);
-	player2->update(deltaTime);
-	glm::vec2 currPos1 = player->getPosition();
-	glm::vec2 currPos2 = player2->getPosition();
-	if ((currPos1.y > SCREEN_HEIGHT / 2) || (currPos2.y < SCREEN_HEIGHT / 2)) init();
-	bool win = false;
-	if (currPos1.x >= (FLAG_X - 2.5) * map->getTileSize() && currPos1.x <= (FLAG_X + 1) * map->getTileSize())
-		win = true;
-	else
-		win = false;
-	flag->update(deltaTime, win);
-	if (Game::instance().getKey(50)) {
-		Game::instance().changeState('M');
+	switch (SceneState) 
+	{
+	case PLAYING:
+		currentTime += deltaTime;
+		player->update(deltaTime);
+		player2->update(deltaTime);
+		glm::vec2 currPos1 = player->getPosition();
+		glm::vec2 currPos2 = player2->getPosition();
+		if ((currPos1.y > SCREEN_HEIGHT / 2) || (currPos2.y < SCREEN_HEIGHT / 2)) init();
+		bool win1 = false;
+		if (currPos1.x >= (FLAG_X - 2.5) * map->getTileSize() && 
+			currPos1.x <= (FLAG_X + 1) * map->getTileSize() &&
+			currPos1.y >= (FLAG_Y) * map->getTileSize() &&
+			currPos1.y <= (FLAG_Y + 2) *map->getTileSize())
+			win1 = true;
+		else
+			win1 = false;
+		flag->update(deltaTime, win1);
+		bool win2 = false;
+		if (currPos2.x >= (FLAG2_X - 2.5) * map->getTileSize() &&
+			currPos2.x <= (FLAG2_X + 1) * map->getTileSize() &&
+			currPos2.y <= (FLAG2_Y)*map->getTileSize() &&
+			currPos2.y >= (FLAG2_Y - 2) * map->getTileSize())
+			win2 = true;
+		else
+			win2 = false;
+		flag2->update(deltaTime, win2);
+		if (Game::instance().getKey(50)) {
+			Game::instance().changeState('M');
+		}
+		break;
 	}
+
 }
 
 void Scene::render()
@@ -83,6 +106,7 @@ void Scene::render()
 	player->render();
 	player2->render();
 	flag->render();
+	flag2->render();
 }
 
 void Scene::initShaders()
@@ -128,8 +152,13 @@ void Scene::setPlayers() {
 
 void Scene::setFlags() {
 	flag = new Flag();
-	flag->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+	flag->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, false);
 	flag->setPosition(glm::vec2(FLAG_X * map->getTileSize(), FLAG_Y * map->getTileSize()));
 	flag->setTileMap(map);
+
+	flag2 = new Flag();
+	flag2->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, true);
+	flag2->setPosition(glm::vec2(FLAG2_X * map->getTileSize(), FLAG2_Y * map->getTileSize()));
+	flag2->setTileMap(map);
 }
 

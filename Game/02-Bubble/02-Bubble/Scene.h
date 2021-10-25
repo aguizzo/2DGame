@@ -32,8 +32,9 @@ private:
 private:
 	TileMap *map;
 	Player *player;
-	Flag* flag;
 	Player* player2;
+	Flag* flag;
+	Flag* flag2;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
