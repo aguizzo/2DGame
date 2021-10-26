@@ -12,14 +12,14 @@ images/suelometal.png 					-- Tilesheet
                                                   
                                                   
         abbc                                      
-        deef                      abbbbbc         
-        deef                      ghhhhhi         
         deef                                      
-        deekbbbbbbbbbbbbbbbc                      
-        deeeeeeeeeeeeeeeeeef                      
-        deeeeeeeeeeeeeeeeeef                      
-        deeeeeeeeeeeeeeeeeef                      
-        ghhhhhhhhhhhhhhhhhhi                      
+        deef                                      
+        deef                                      
+        deekbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc       
+        deeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef       
+        deeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef       
+        deeeeehheeeeeeeeeeeeeeeeeeeeeeeeeef       
+        ghhhhh  hhhhhhhhhhhhhhhhhhhhhhhhhhi       
                                                   
                                   abbbbbc         
                                   ghhhhhi         

@@ -17,6 +17,8 @@
 #define FLAG2_X 23
 #define FLAG2_Y 17
 
+#define PROPORTION 1.4f
+
 
 enum SceneState {
 	WON, PLAYING
@@ -39,7 +41,7 @@ Scene::~Scene()
 	if(player != NULL)
 		delete player;
 	if (player2 != NULL)
-		delete player;
+		delete player2;
 	if (flag != NULL)
 		delete flag;
 }
@@ -52,7 +54,9 @@ void Scene::init()
 	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	setPlayers();
 	setFlags();
-	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
+	camera = WORLD_WIDTH / 2;
+	scroll = 0;
+	projection = glm::ortho(float(camera - SCREEN_WIDTH/PROPORTION - scroll), float(camera + SCREEN_WIDTH/PROPORTION + scroll), float(WORLD_HEIGHT/2 + SCREEN_HEIGHT/PROPORTION + scroll*PROPORTION), float(WORLD_HEIGHT/2 - SCREEN_HEIGHT/PROPORTION - scroll*PROPORTION));
 	currentTime = 0.0f;
 }
 
@@ -66,8 +70,18 @@ void Scene::update(int deltaTime)
 		player2->update(deltaTime);
 		glm::vec2 currPos1 = player->getPosition();
 		glm::vec2 currPos2 = player2->getPosition();
-		if ((currPos1.y > SCREEN_HEIGHT / 2) || (currPos2.y < SCREEN_HEIGHT / 2)) init();
+		camera = (currPos1.x + currPos2.x)/2;
+		/*
+		if ((currPos1.x > camera + abs(currPos1.x - currPos2.x)) || (currPos2.x > camera + abs(currPos1.x - currPos2.x)))
+			camera += 6;
+		if ((currPos1.x < camera - abs(currPos1.x - currPos2.x)) || (currPos2.x < camera - abs(currPos1.x - currPos2.x)))
+			camera -= 6;
+		*/
+		if ((currPos1.y > WORLD_HEIGHT / 2) || (currPos2.y < WORLD_HEIGHT / 2)) init();
 		bool win1 = false;
+		if (abs(currPos1.x - currPos2.x) > SCREEN_WIDTH / 1.2)
+			scroll = abs(abs(currPos1.x - currPos2.x) - SCREEN_WIDTH / 1.2) / 2;
+		else scroll = 0;
 		if (currPos1.x >= (FLAG_X - 2.5) * map->getTileSize() && 
 			currPos1.x <= (FLAG_X + 1) * map->getTileSize() &&
 			currPos1.y >= (FLAG_Y) * map->getTileSize() &&
@@ -89,8 +103,9 @@ void Scene::update(int deltaTime)
 			Game::instance().changeState('M');
 		}
 		break;
-	}
 
+	}
+	projection = glm::ortho(float(camera - SCREEN_WIDTH / PROPORTION - scroll), float(camera + SCREEN_WIDTH / PROPORTION + scroll), float(WORLD_HEIGHT / 2 + SCREEN_HEIGHT / PROPORTION + scroll / PROPORTION), float(WORLD_HEIGHT / 2 - SCREEN_HEIGHT / PROPORTION - scroll / PROPORTION));
 }
 
 void Scene::render()
@@ -146,7 +161,7 @@ void Scene::setPlayers() {
 	player->setTileMap(map);
 	player2 = new Player();
 	player2->init(glm::ivec2(SCREEN_X, SCREEN_Y), true, texProgram);
-	player2->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), SCREEN_HEIGHT - INIT_PLAYER_Y_TILES * map->getTileSize()));
+	player2->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), WORLD_HEIGHT - INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player2->setTileMap(map);
 }
 
