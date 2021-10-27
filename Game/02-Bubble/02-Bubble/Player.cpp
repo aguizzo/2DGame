@@ -7,7 +7,7 @@
 
 
 #define JUMP_ANGLE_STEP 4
-#define JUMP_HEIGHT 126
+#define MAX_JUMP_HEIGHT 126
 #define FALL_STEP 6
 
 
@@ -21,6 +21,7 @@ void Player::init(const glm::ivec2 &tileMapPos, bool inv, ShaderProgram &shaderP
 {
 	inverted = inv;
 	bJumping = false;
+	jumpHeight = 0;
 	if(inv) spritesheet.loadFromFile("images/megamaninv.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	else spritesheet.loadFromFile("images/megaman.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(72, 72), glm::vec2(1/8.f, 0.5f), &spritesheet, &shaderProgram);
@@ -136,7 +137,7 @@ void Player::update(int deltaTime)
 			}
 			else
 			{
-				posPlayer.y = int(startY + JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
+				posPlayer.y = int(startY + MAX_JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
 				if (jumpAngle > 90) {
 					bJumping = !map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
 				}
@@ -160,11 +161,12 @@ void Player::update(int deltaTime)
 			}
 			else
 			{
-				posPlayer.y = int(startY - JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
+				posPlayer.y = int(startY - MAX_JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
 				if (jumpAngle > 90)
 					bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
 			}
 		}
+		if (!Game::instance().getSpecialKey(GLUT_KEY_UP) && jumpAngle > 30) bJumping = false;
 	}
 	else
 	{
@@ -176,6 +178,7 @@ void Player::update(int deltaTime)
 					sprite->changeAnimation(STAND_LEFT);
 				else if (sprite->animation() == JUMP_RIGHT)
 					sprite->changeAnimation(STAND_RIGHT);
+				jumpHeight = 0;
 				if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
 				{
 					bJumping = true;
@@ -199,6 +202,7 @@ void Player::update(int deltaTime)
 					sprite->changeAnimation(STAND_LEFT);
 				else if (sprite->animation() == JUMP_RIGHT)
 					sprite->changeAnimation(STAND_RIGHT);
+				jumpHeight = 0;
 				if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
 				{
 					bJumping = true;

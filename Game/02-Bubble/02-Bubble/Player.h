@@ -27,7 +27,7 @@ private:
 	bool fstjump = true;
 	bool inverted;
 	glm::ivec2 tileMapDispl, posPlayer;
-	int jumpAngle, startY;
+	int jumpAngle, jumpHeight, startY;
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
