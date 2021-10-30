@@ -71,12 +71,6 @@ void Scene::update(int deltaTime)
 		glm::vec2 currPos1 = player->getPosition();
 		glm::vec2 currPos2 = player2->getPosition();
 		camera = (currPos1.x + currPos2.x)/2;
-		/*
-		if ((currPos1.x > camera + abs(currPos1.x - currPos2.x)) || (currPos2.x > camera + abs(currPos1.x - currPos2.x)))
-			camera += 6;
-		if ((currPos1.x < camera - abs(currPos1.x - currPos2.x)) || (currPos2.x < camera - abs(currPos1.x - currPos2.x)))
-			camera -= 6;
-		*/
 		if ((currPos1.y > WORLD_HEIGHT / 2) || (currPos2.y < WORLD_HEIGHT / 2)) init();
 		bool win1 = false;
 		if (abs(currPos1.x - currPos2.x) > SCREEN_WIDTH / 1.2)

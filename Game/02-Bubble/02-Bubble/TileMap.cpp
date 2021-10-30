@@ -150,128 +150,137 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 // Method collisionMoveDown also corrects Y coordinate if the box is
 // already intersecting a tile below.
 
-bool TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const
+int TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) const
 {
 	int x, y0, y1;
 	
-	x = pos.x / tileSize;
+	x = (pos.x + 15) / tileSize;
 	y0 = pos.y / tileSize;
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
 	{
 		if(map[y*mapSize.x+x] != 0)
-			return true;
+			return 1;
 	}
 	
-	return false;
+	return 0;
 }
 
-bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const
+int TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const
 {
 	int x, y0, y1;
 	
-	x = (pos.x + size.x - 1) / tileSize;
+	x = (pos.x + size.x - 15) / tileSize;
 	y0 = pos.y / tileSize;
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
 	{
 		if(map[y*mapSize.x+x] != 0)
-			return true;
+			return 1;
 	}
 	
-	return false;
+	return 0;
 }
 
-bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const
+int TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const
 {
 	int x0, x1, y;
 	
 	x0 = (pos.x + 15) / tileSize;
 	x1 = (pos.x + size.x - 15) / tileSize;
 	y = (pos.y + size.y - 1) / tileSize;
-	for(int x=x0; x<=x1; x++)
+
+	int tl = map[y * mapSize.x + x0];
+	int tr = map[y * mapSize.x + x1];
+	if(tl != 0 || tr != 0)
 	{
-		if(map[y*mapSize.x+x] != 0)
+		int df = *posY - tileSize * y + size.y;
+		if ((tl == 14 || tl == 15 ||tr == 14 || tr == 15) && df <= 6)
+			return 2;
+		else if (df <= 6)
 		{
-			if(*posY - tileSize * y + size.y <= 6)
-			{
-				*posY = tileSize * y - size.y;
-				return true;
-			}
+			*posY = tileSize * y - size.y;
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+
+int TileMap::collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
+{
+	int x0, x1, y;
+
+	x0 = (pos.x+15) / tileSize;
+	x1 = (pos.x + size.x - 15) / tileSize;
+	y = (pos.y - tileSize + 1) / tileSize +1;
+
+	int tl = map[y * mapSize.x + x0];
+	int tr = map[y * mapSize.x + x1];
+	if (tl != 0 || tr != 0)
+	{
+		int df = *posY - size.y - tileSize * (y - 1);
+		if ((tl == 14 || tl == 15 || tr == 14 || tr == 15) && df <= 0) return 2;
+		else if (df <= 6)
+		{
+			*posY = tileSize * (y-1) + size.y;
+			return 1;
 		}
 	}
 	
-	return false;
+
+	return 0;
 }
 
 
-bool TileMap::collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
+int TileMap::collisionMoveUpInv(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
 {
 	int x0, x1, y;
 
-	x0 = pos.x / tileSize;
-	x1 = (pos.x + size.x - 1) / tileSize;
-	y = (pos.y - tileSize + 1) / tileSize +1;
-	for (int x = x0; x <= x1; x++)
-	{
-		if (map[y * mapSize.x + x] != 0)
-		{
-			if (*posY - size.y - tileSize * (y-1) <= 6)
-			{
-				*posY = tileSize * (y-1) + size.y;
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-
-bool TileMap::collisionMoveUpInv(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
-{
-	int x0, x1, y;
-
-	x0 = pos.x / tileSize;
-	x1 = (pos.x + size.x - 1) / tileSize;
+	x0 = (pos.x+15) / tileSize;
+	x1 = (pos.x + size.x - 15) / tileSize;
 	y = (pos.y + size.y - 1) / tileSize;
-	for (int x = x0; x <= x1; x++)
+
+	int tl = map[y * mapSize.x + x0];
+	int tr = map[y * mapSize.x + x1];
+	if (tl != 0 || tr != 0)
 	{
-		if (map[y * mapSize.x + x] != 0)
-		{
-			if (*posY - tileSize * y + size.y <= 6)
-			{
-				*posY = tileSize * y - size.y;
-				return true;
-			}
+		int df = *posY - tileSize * y;
+		if ((tl == 14 || tl == 15 || tr == 14 || tr == 15) && df <= 0) return 2;
+		else if (df <= 6) {
+			*posY = tileSize * y - size.y;
+			return 1;
 		}
 	}
+	
 
-	return false;
+	return 0;
 }
 
-bool TileMap::collisionMoveDownInv(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
+int TileMap::collisionMoveDownInv(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
 {
 	int x0, x1, y;
 
 	x0 = (pos.x + 15)/ tileSize;
 	x1 = (pos.x + size.x - 15) / tileSize;
 	y = ((pos.y - size.y + 10) / tileSize + 1);
-	for (int x = x0; x <= x1; x++)
+
+	int tl = map[y * mapSize.x + x0];
+	int tr = map[y * mapSize.x + x1];
+	if (tl != 0 || tr != 0)
 	{
-		
-		if (map[y * mapSize.x + x] != 0)
+		int df = *posY - size.y - tileSize * (y - 1);
+		if ((tl == 14 || tl == 15 || tr == 14 || tr == 15) && df <= 0) return 2;
+		else if (df <= 6)
 		{
-			
-			if (*posY - size.y - tileSize * (y-1) <= 6)
-			{
-				*posY = tileSize * (y-1) + size.y;
-				return true;
-			}
+			*posY = tileSize * (y-1) + size.y;
+			return 1;
 		}
 	}
 
-	return false;
+
+	return 0;
 }
 
 
