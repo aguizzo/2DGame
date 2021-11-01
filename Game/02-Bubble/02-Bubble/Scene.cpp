@@ -32,6 +32,7 @@ Scene::Scene()
 	player2 = NULL;
 	flag = NULL;
 	flag2 = NULL;
+	lever = NULL;
 }
 
 Scene::~Scene()
@@ -44,6 +45,8 @@ Scene::~Scene()
 		delete player2;
 	if (flag != NULL)
 		delete flag;
+	if (lever != NULL)
+		delete lever;
 }
 
 
@@ -54,6 +57,12 @@ void Scene::init()
 	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	setPlayers();
 	setFlags();
+
+	lever = new Lever();
+	lever->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
+	lever->setPosition(glm::vec2(22 * map->getTileSize(), 11 * map->getTileSize()));
+	lever->setTileMap(map);
+
 	camera = WORLD_WIDTH / 2;
 	scroll = 0;
 	projection = glm::ortho(float(camera - SCREEN_WIDTH/PROPORTION - scroll), float(camera + SCREEN_WIDTH/PROPORTION + scroll), float(WORLD_HEIGHT/2 + SCREEN_HEIGHT/PROPORTION + scroll*PROPORTION), float(WORLD_HEIGHT/2 - SCREEN_HEIGHT/PROPORTION - scroll*PROPORTION));
@@ -96,6 +105,8 @@ void Scene::update(int deltaTime)
 		if (Game::instance().getKey(50)) {
 			Game::instance().changeState('M');
 		}
+		if ((abs(player->getPosition().x - lever->getPosition().x) <= 36) && (abs(player->getPosition().y - lever->getPosition().y) <= 36))
+			lever->activate();
 		break;
 
 	}
@@ -116,6 +127,7 @@ void Scene::render()
 	player2->render();
 	flag->render();
 	flag2->render();
+	lever->render();
 }
 
 void Scene::initShaders()

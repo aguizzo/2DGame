@@ -7,7 +7,7 @@
 #include "TileMap.h"
 #include "Player.h"
 #include "Flag.h"
-
+#include "Lever.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -35,6 +35,7 @@ private:
 	Player* player2;
 	Flag* flag;
 	Flag* flag2;
+	Lever* lever;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;

@@ -19,8 +19,8 @@ images/nivelmetal.png 					-- Tilesheet
         deeeeeeeeeeeeeeeeekbjeeeeeeeeeeeeef       
         deeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef       
         deeeemhhleeeeeeeeeeeeeeeeeeeeeeeeef       
-        ghhhhi  ghhhhhhhhhhhhhhhhhhhhhhhhhi       
-        o                                         
+        ghhhhiooghhhhhhhhhhhhhhhhhhhhhhhhhi       
+                                                  
                                                   
                                   abbbbbc         
             n                     ghhhhhi         
