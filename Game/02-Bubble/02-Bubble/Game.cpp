@@ -4,7 +4,7 @@
 
 
 enum State {
-	MENU, SCENE
+	MENU, HOW_TO, CREDITS, SCENE
 };
 
 void Game::init()
@@ -14,6 +14,8 @@ void Game::init()
 	//gris azulado	//glClearColor(0.f, 0.8f, 1.f, 1.0f);   //azul cielo
 	State = MENU;
 	menu.init();
+	howTo.init();
+	credits.init();
 	scene.init();
 }
 
@@ -24,10 +26,16 @@ bool Game::update(int deltaTime)
 	case MENU:
 		menu.update(deltaTime);
 		break;
+	case HOW_TO:
+		howTo.update(deltaTime);
+		break;
+	case CREDITS:
+		credits.update(deltaTime);
+		break;
 	case SCENE:
 		scene.update(deltaTime);
+		break;
 	}
-	
 	return bPlay;
 }
 
@@ -38,6 +46,12 @@ void Game::render()
 	{
 	case MENU:
 		menu.render();
+		break;
+	case HOW_TO:
+		howTo.render();
+		break;
+	case CREDITS:
+		credits.render();
 		break;
 	case SCENE: 
 		scene.render();
@@ -52,6 +66,12 @@ void Game::changeState(char c)
 	case 'M': 
 		State = MENU;
 		break;
+	case 'H':
+		State = HOW_TO;
+		break;
+	case 'C':
+		State = CREDITS;
+		break;
 	case 'S':
 		State = SCENE;
 		break;
@@ -62,8 +82,11 @@ void Game::keyPressed(int key)
 {
 	if(key == 27) // Escape code
 		bPlay = false;
-	if (key == 13)
-		this->init();
+	
+	
+	//if (key == 13)
+		
+	//this->init();
 	keys[key] = true;
 }
 
@@ -102,6 +125,10 @@ bool Game::getKey(int key) const
 bool Game::getSpecialKey(int key) const
 {
 	return specialKeys[key];
+}
+
+void Game::setSpecialKey(int key) {
+	specialKeyReleased(key);
 }
 
 

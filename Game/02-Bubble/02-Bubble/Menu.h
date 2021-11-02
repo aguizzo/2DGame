@@ -3,6 +3,7 @@
 #include "TexturedQuad.h"
 #include "TileMap.h"
 #include "Player.h"
+#include "Text.h"
 
 class Menu
 {
@@ -16,15 +17,17 @@ public:
 
 private:
 	void initShaders();
+	void updateMenuOptions();
 
 private:
 	ShaderProgram texProgram;
 	float currentTime;
-	TexturedQuad* background;
+	TexturedQuad* background, *cursor;
 	glm::mat4 projection;
-	Texture bgImage;
+	Texture bgImage, cursorImg;
 	TileMap *map;
-	Player *player;
+	Text text;
+	int option;
 };
 
 
