@@ -7,6 +7,7 @@
 #include "TileMap.h"
 #include "Player.h"
 #include "Flag.h"
+#include "TexturedQuad.h"
 
 
 // Scene contains all the entities of our game.
@@ -39,6 +40,8 @@ private:
 	float currentTime;
 	glm::mat4 projection;
 	int SceneState;
+	TexturedQuad* background;
+	Texture bgImage;
 };
 
 

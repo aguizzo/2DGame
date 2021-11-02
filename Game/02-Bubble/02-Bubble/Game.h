@@ -6,7 +6,7 @@
 #include "Menu.h"
 #include "HowToPlay.h"
 #include "Credits.h"
-
+#include <irrKlang.h>
 
 #define SCREEN_WIDTH 1800
 #define SCREEN_HEIGHT 1000
@@ -56,6 +56,7 @@ private:
 	Menu menu;
 	HowToPlay howTo;
 	Credits credits;
+	irrklang::ISoundEngine* engine;
 };
 
 

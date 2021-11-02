@@ -29,20 +29,21 @@ void Menu::init()
 {
 	initShaders();
 	currentTime = 0.0f;
-
+	engine = irrklang::createIrrKlangDevice();
+	engine->setSoundVolume(0.5f);
+		
 	int option = 0;
 
-	glm::vec2 geom[2] = {glm::vec2(0.f, 0.f), glm::vec2(640.f, 480.f)};
+	glm::vec2 geom[2] = {glm::vec2(0.f, 0.f), glm::vec2(1800.f, 1000.f)};
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 	background = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
-	bgImage.loadFromFile("images/sisao.png",
-		TEXTURE_PIXEL_FORMAT_RGBA);
+	bgImage.loadFromFile("images/mega_bg.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	cursorImg.loadFromFile("images/Cursor.png", TEXTURE_PIXEL_FORMAT_RGBA);
 
 	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
-	if (!text.init("fonts/OpenSans-Regular.ttf"))
+	if (!text.init("fonts/MMRock9.ttf"))
 		//if(!text.init("fonts/OpenSans-Bold.ttf"))
 		//if(!text.init("fonts/DroidSerif.ttf"))
 		cout << "Could not load font!!!" << endl;
@@ -57,11 +58,13 @@ void Menu::update(int deltaTime) {
 		Game::instance().setSpecialKey(GLUT_KEY_DOWN);
 		option += 1;
 		option = option % 3;
+		engine->play2D("sounds/11_Dink.wav", false);
 	}
 	else if (Game::instance().getSpecialKey(GLUT_KEY_UP)) {
 		Game::instance().setSpecialKey(GLUT_KEY_UP);
 		option += 2;
 		option = option % 3;
+		engine->play2D("sounds/11_Dink.wav", false);
 	}
 	if (Game::instance().getKey(13)) 
 	{	
@@ -89,7 +92,8 @@ void Menu::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
-	//background->render(bgImage);
+	background->render(bgImage);
+	text.render("MEGAMAN", glm::vec2(900, 500), 14, glm::vec4(1, 1, 1, 1));
 	updateMenuOptions();
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
@@ -98,7 +102,6 @@ void Menu::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	cursor->render(cursorImg);
-	//map->render();
 }
 
 void Menu::updateMenuOptions() {

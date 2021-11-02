@@ -52,6 +52,10 @@ void Scene::init()
 	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	setPlayers();
 	setFlags();
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(1800.f, 1000.f) };
+	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+	background = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
+	bgImage.loadFromFile("images/mega_bg2.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	currentTime = 0.0f;
 }
@@ -102,6 +106,7 @@ void Scene::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
+	background->render(bgImage);
 	map->render();
 	player->render();
 	player2->render();
