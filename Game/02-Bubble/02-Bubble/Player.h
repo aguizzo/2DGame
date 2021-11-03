@@ -20,12 +20,14 @@ public:
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
+	void setContact(string side);
 	glm::vec2 getPosition() { return posPlayer; }
 	
 private:
 	bool bJumping;
 	bool fstjump = true;
 	bool inverted;
+	bool cl, cr, cu;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, jumpHeight, startY;
 	Texture spritesheet;

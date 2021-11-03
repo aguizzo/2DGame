@@ -22,6 +22,7 @@ void Player::init(const glm::ivec2 &tileMapPos, bool inv, ShaderProgram &shaderP
 	inverted = inv;
 	bJumping = false;
 	jumpHeight = 0;
+	cl = false, cr = false, cu = false;
 	if(inv) spritesheet.loadFromFile("images/megamaninv.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	else spritesheet.loadFromFile("images/megaman.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(72, 72), glm::vec2(1/8.f, 0.5f), &spritesheet, &shaderProgram);
@@ -85,28 +86,52 @@ void Player::update(int deltaTime)
 	sprite->update(deltaTime);
 	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
 	{
+		cr = false;
 		if ((sprite->animation() == JUMP_LEFT) || (sprite->animation() == JUMP_RIGHT))
 			sprite->changeAnimation(JUMP_LEFT);
 		else if(sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
 		posPlayer.x -= 6;
-		if(map->collisionMoveLeft(posPlayer, glm::ivec2(72, 72)))
+		if (cl)
 		{
-			posPlayer.x += 6;
-			sprite->changeAnimation(STAND_LEFT);
+			if (map->collisionMoveLeft(posPlayer - glm::ivec2(58, 0), glm::ivec2(72, 72)))
+			{
+				posPlayer.x += 6;
+				sprite->changeAnimation(STAND_LEFT);
+			}
+		}
+		else 
+		{
+			if (map->collisionMoveLeft(posPlayer + glm::ivec2(14, 0), glm::ivec2(72, 72)))
+			{
+				posPlayer.x += 6;
+				sprite->changeAnimation(STAND_LEFT);
+			}
 		}
 	}
 	else if(Game::instance().getSpecialKey(GLUT_KEY_RIGHT))
 	{
+		cl = false;
 		if ((sprite->animation() == JUMP_RIGHT) || (sprite->animation() == JUMP_LEFT))
 			sprite->changeAnimation(JUMP_RIGHT);
 		else if(sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
 		posPlayer.x += 6;
-		if(map->collisionMoveRight(posPlayer, glm::ivec2(72, 72)))
+		if (cr)
 		{
-			posPlayer.x -= 6;
-			sprite->changeAnimation(STAND_RIGHT);
+			if (map->collisionMoveRight(posPlayer + glm::ivec2(58, 0), glm::ivec2(72, 72)))
+			{
+				posPlayer.x -= 6;
+				sprite->changeAnimation(STAND_RIGHT);
+			}
+		}
+		else
+		{
+			if (map->collisionMoveRight(posPlayer - glm::ivec2(14, 0), glm::ivec2(72, 72)))
+			{
+				posPlayer.x -= 6;
+				sprite->changeAnimation(STAND_RIGHT);
+			}
 		}
 	}
 	else
@@ -179,56 +204,58 @@ void Player::update(int deltaTime)
 	}
 	else
 	{
-		if (inverted) {
-			posPlayer.y -= FALL_STEP;
-			int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-			if (coldown == 1)
-			{
-				if (sprite->animation() == JUMP_LEFT)
-					sprite->changeAnimation(STAND_LEFT);
-				else if (sprite->animation() == JUMP_RIGHT)
-					sprite->changeAnimation(STAND_RIGHT);
-				jumpHeight = 0;
-				if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
+		if (!cu) {
+			if (inverted) {
+				posPlayer.y -= FALL_STEP;
+				int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+				if (coldown == 1)
 				{
-					bJumping = true;
-					fstjump = false;
-					jumpAngle = 0;
-					startY = posPlayer.y;
+					if (sprite->animation() == JUMP_LEFT)
+						sprite->changeAnimation(STAND_LEFT);
+					else if (sprite->animation() == JUMP_RIGHT)
+						sprite->changeAnimation(STAND_RIGHT);
+					jumpHeight = 0;
+					if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
+					{
+						bJumping = true;
+						fstjump = false;
+						jumpAngle = 0;
+						startY = posPlayer.y;
+					}
+				}
+				else if (coldown == 2) Game::instance().init();
+				else {
+					if (sprite->animation() == STAND_LEFT)
+						sprite->changeAnimation(JUMP_LEFT);
+					else if (sprite->animation() == STAND_RIGHT)
+						sprite->changeAnimation(JUMP_RIGHT);
 				}
 			}
-			else if (coldown == 2) Game::instance().init();
 			else {
-				if (sprite->animation() == STAND_LEFT)
-					sprite->changeAnimation(JUMP_LEFT);
-				else if (sprite->animation() == STAND_RIGHT)
-					sprite->changeAnimation(JUMP_RIGHT);
-			}
-		}
-		else {
-			posPlayer.y += FALL_STEP;
-			int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-			if (coldown == 1)
-			{
-				if (sprite->animation() == JUMP_LEFT)
-					sprite->changeAnimation(STAND_LEFT);
-				else if (sprite->animation() == JUMP_RIGHT)
-					sprite->changeAnimation(STAND_RIGHT);
-				jumpHeight = 0;
-				if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
+				posPlayer.y += FALL_STEP;
+				int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+				if (coldown == 1)
 				{
-					bJumping = true;
-					fstjump = false;
-					jumpAngle = 0;
-					startY = posPlayer.y;
+					if (sprite->animation() == JUMP_LEFT)
+						sprite->changeAnimation(STAND_LEFT);
+					else if (sprite->animation() == JUMP_RIGHT)
+						sprite->changeAnimation(STAND_RIGHT);
+					jumpHeight = 0;
+					if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
+					{
+						bJumping = true;
+						fstjump = false;
+						jumpAngle = 0;
+						startY = posPlayer.y;
+					}
 				}
-			}
-			else if (coldown == 2) Game::instance().init();
-			else {
-				if (sprite->animation() == STAND_LEFT)
-					sprite->changeAnimation(JUMP_LEFT);
-				else if (sprite->animation() == STAND_RIGHT)
-					sprite->changeAnimation(JUMP_RIGHT);
+				else if (coldown == 2) Game::instance().init();
+				else {
+					if (sprite->animation() == STAND_LEFT)
+						sprite->changeAnimation(JUMP_LEFT);
+					else if (sprite->animation() == STAND_RIGHT)
+						sprite->changeAnimation(JUMP_RIGHT);
+				}
 			}
 		}
 	}
@@ -252,5 +279,27 @@ void Player::setPosition(const glm::vec2 &pos)
 }
 
 
-
+void Player::setContact(string s) 
+{
+	if (s == "right") {
+		cr = true;
+		cl = false;
+		cu = false;
+	}
+	else if (s =="left"){
+		cl = true;
+		cr = false;
+		cu = false;
+	}
+	else if (s == "up") {
+		cl = false;
+		cr = false;
+		cu = true;
+	}
+	else {
+		cl = false;
+		cr = false;
+		cu = false;
+	}
+}
 

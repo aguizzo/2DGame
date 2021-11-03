@@ -33,6 +33,8 @@ Scene::Scene()
 	flag = NULL;
 	flag2 = NULL;
 	lever = NULL;
+	lever2 = NULL;
+	box = NULL;
 }
 
 Scene::~Scene()
@@ -47,6 +49,10 @@ Scene::~Scene()
 		delete flag;
 	if (lever != NULL)
 		delete lever;
+	if (lever2 != NULL)
+		delete lever2;
+	if (box != NULL)
+		delete box;
 }
 
 
@@ -60,8 +66,18 @@ void Scene::init()
 
 	lever = new Lever();
 	lever->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
-	lever->setPosition(glm::vec2(22 * map->getTileSize(), 11 * map->getTileSize()));
+	lever->setPosition(glm::vec2(28 * map->getTileSize(), 11 * map->getTileSize()));
 	lever->setTileMap(map);
+
+	lever2 = new Lever();
+	lever2->init(glm::ivec2(SCREEN_X, SCREEN_Y), true, texProgram);
+	lever2->setPosition(glm::vec2(22 * map->getTileSize(), 17 * map->getTileSize()));
+	lever2->setTileMap(map);
+
+	box = new Box();
+	box->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
+	box->setPosition(glm::vec2(22 * map->getTileSize(), 7 * map->getTileSize()));
+	box->setTileMap(map);
 
 	camera = WORLD_WIDTH / 2;
 	scroll = 0;
@@ -105,10 +121,11 @@ void Scene::update(int deltaTime)
 		if (Game::instance().getKey(50)) {
 			Game::instance().changeState('M');
 		}
-		if ((abs(player->getPosition().x - lever->getPosition().x) <= 36) && (abs(player->getPosition().y - lever->getPosition().y) <= 36))
-			lever->activate();
+		collisions();
+		box->update(deltaTime);
+		int bpos = box->getPosition().y;
+		if ((bpos >= (WORLD_HEIGHT / 2) - 42) && (bpos <= (WORLD_HEIGHT / 2) + 42)) box->setMid();
 		break;
-
 	}
 	projection = glm::ortho(float(camera - SCREEN_WIDTH / PROPORTION - scroll), float(camera + SCREEN_WIDTH / PROPORTION + scroll), float(WORLD_HEIGHT / 2 + SCREEN_HEIGHT / PROPORTION + scroll / PROPORTION), float(WORLD_HEIGHT / 2 - SCREEN_HEIGHT / PROPORTION - scroll / PROPORTION));
 }
@@ -128,6 +145,8 @@ void Scene::render()
 	flag->render();
 	flag2->render();
 	lever->render();
+	lever2->render();
+	box->render();
 }
 
 void Scene::initShaders()
@@ -183,3 +202,45 @@ void Scene::setFlags() {
 	flag2->setTileMap(map);
 }
 
+void Scene::collisions() {
+	if ((abs(player->getPosition().x + 15 - lever->getPosition().x) <= 36) && (abs(player->getPosition().y + 36 - lever->getPosition().y) <= 36))
+	{
+		lever->activate();
+	}
+	if ((abs(player2->getPosition().x + 15 - lever2->getPosition().x) <= 36) && (abs(player2->getPosition().y + 36 - lever2->getPosition().y) <= 36))
+		lever2->activate();
+
+	int cr = box->getPosition().x - (player->getPosition().x + 36) + 15;
+	int cl = player->getPosition().x + 15 - (box->getPosition().x + 36);
+	int cri = box->getPosition().x - (player2->getPosition().x + 36) + 15;
+	int cli = player2->getPosition().x + 15 - (box->getPosition().x + 36);
+	int cu = box->getPosition().y - (player->getPosition().y + 72);
+	int cui = player2->getPosition().y - (box->getPosition().y + 72);
+	if ((cr >= 0 && cr <= 36) && (abs(player->getPosition().y + 36 - box->getPosition().y) <= 36)) {
+		box->setContact(true);
+		player->setContact("right");
+	}
+	else if ((cri >= 0 && cri <= 36) && (abs(player2->getPosition().y + 36 - box->getPosition().y) <= 36)) {
+		box->setContact(true);
+		player2->setContact("right");
+	}
+	else if ((cl >= 0 && cl <= 36) && (abs(player->getPosition().y + 36 - box->getPosition().y) <= 36))
+	{
+		box->setContact(true);
+		player->setContact("left");
+	}
+	else if ((cli >= 0 && cli <= 36) && (abs(player2->getPosition().y + 36 - box->getPosition().y) <= 36))
+	{
+		box->setContact(true);
+		player2->setContact("left");
+	}
+	else if ((cu <= 6 && cu >= 0) && (player->getPosition().x + 72 - 15 >= box->getPosition().x) && (player->getPosition().x + 15 <= box->getPosition().x + 72))
+		player->setContact("up");
+	else if((cui <= 6 && cui >= 0) && (player2->getPosition().x + 72 - 15 >= box->getPosition().x) && (player2->getPosition().x + 15 <= box->getPosition().x + 72))
+		player2->setContact("up");
+	else
+	{
+		box->setContact(false);
+		player->setContact("");
+	}
+}

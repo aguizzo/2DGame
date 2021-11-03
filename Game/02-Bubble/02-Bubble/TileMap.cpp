@@ -154,7 +154,7 @@ int TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) co
 {
 	int x, y0, y1;
 	
-	x = (pos.x + 15) / tileSize;
+	x = pos.x / tileSize;
 	y0 = pos.y / tileSize;
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
@@ -170,7 +170,7 @@ int TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) c
 {
 	int x, y0, y1;
 	
-	x = (pos.x + size.x - 15) / tileSize;
+	x = (pos.x + size.x - 1) / tileSize;
 	y0 = pos.y / tileSize;
 	y1 = (pos.y + size.y - 1) / tileSize;
 	for(int y=y0; y<=y1; y++)
@@ -201,6 +201,29 @@ int TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, in
 		{
 			*posY = tileSize * y - size.y;
 			return 1;
+		}
+	}
+
+	return 0;
+}
+
+int TileMap::collisionMoveDownBox(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
+{
+	int x0, x1, y;
+
+	x0 = (pos.x + 1) / tileSize;
+	x1 = (pos.x + size.x - 1) / tileSize;
+	y = (pos.y + size.y - 1) / tileSize;
+
+	for (int x = x0; x <= x1; x++) {
+		if (map[y * mapSize.x + x] != 0)
+		{
+			int df = *posY - tileSize * y + size.y;
+			if (df <= 6)
+			{
+				*posY = tileSize * y - size.y;
+				return 1;
+			}
 		}
 	}
 
@@ -283,7 +306,29 @@ int TileMap::collisionMoveDownInv(const glm::ivec2& pos, const glm::ivec2& size,
 	return 0;
 }
 
+int TileMap::collisionMoveDownBoxInv(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const
+{
+	int x0, x1, y;
 
+	x0 = (pos.x + 15) / tileSize;
+	x1 = (pos.x + size.x - 15) / tileSize;
+	y = ((pos.y - size.y + 10) / tileSize + 1);
+
+
+	for (int x = x0; x <= x1; x++) {
+		if (map[y * mapSize.x + x] != 0)
+		{
+			int df = *posY - size.y - tileSize * (y - 1);
+			if (df <= 6)
+			{
+				*posY = tileSize * (y - 1) + size.y;
+				return 1;
+			}
+		}
+	}
+
+	return 0;
+}
 
 
 

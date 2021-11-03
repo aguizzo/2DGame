@@ -32,6 +32,8 @@ public:
 	int collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) const;
 	int collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const;
 	int collisionMoveDownInv(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const;
+	int collisionMoveDownBox(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const;
+	int collisionMoveDownBoxInv(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const;
 	int collisionMoveUp(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const;
 	int collisionMoveUpInv(const glm::ivec2& pos, const glm::ivec2& size, int* posY) const;
 	

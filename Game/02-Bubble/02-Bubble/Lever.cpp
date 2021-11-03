@@ -35,7 +35,7 @@ void Lever::init(const glm::ivec2& tileMapPos, bool inv, ShaderProgram& shaderPr
 	if (inverted) sprite->changeAnimation(INVDEACTIVATED);
 	else sprite->changeAnimation(DEACTIVATED);
 	tileMapDispl = tileMapPos;
-	sprite->setPosition(glm::vec2(tileMapDispl.x, tileMapDispl.y));
+	sprite->setPosition(glm::vec2(tileMapDispl.x + posLever.x, tileMapDispl.y + posLever.y));
 }
 
 void Lever::update(int deltaTime){}

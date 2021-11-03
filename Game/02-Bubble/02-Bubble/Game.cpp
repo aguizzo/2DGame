@@ -10,8 +10,8 @@ enum State {
 void Game::init()
 {
 	bPlay = true;
-	glClearColor(0.6f, 0.8f, 0.8f, 1.0f);  
-	//gris azulado	//glClearColor(0.f, 0.8f, 1.f, 1.0f);   //azul cielo
+	glClearColor(0.6f, 0.8f, 0.8f, 1.0f);  //gris azulado
+	//glClearColor(0.f, 0.8f, 1.f, 1.0f);   //azul cielo
 	State = MENU;
 	menu.init();
 	scene.init();
