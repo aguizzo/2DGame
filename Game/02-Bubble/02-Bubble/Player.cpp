@@ -99,6 +99,7 @@ void Player::update(int deltaTime)
 				posPlayer.x += 6;
 				sprite->changeAnimation(STAND_LEFT);
 			}
+			else posPlayer.x += 3;
 		}
 		else 
 		{
@@ -124,6 +125,7 @@ void Player::update(int deltaTime)
 				posPlayer.x -= 6;
 				sprite->changeAnimation(STAND_RIGHT);
 			}
+			else posPlayer.x -= 3;
 		}
 		else
 		{
@@ -204,11 +206,11 @@ void Player::update(int deltaTime)
 	}
 	else
 	{
-		if (!cu) {
+		//if (!cu) {
 			if (inverted) {
-				posPlayer.y -= FALL_STEP;
+				if(!cu)posPlayer.y -= FALL_STEP;
 				int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-				if (coldown == 1)
+				if (coldown == 1 || cu)
 				{
 					if (sprite->animation() == JUMP_LEFT)
 						sprite->changeAnimation(STAND_LEFT);
@@ -232,9 +234,9 @@ void Player::update(int deltaTime)
 				}
 			}
 			else {
-				posPlayer.y += FALL_STEP;
+				if(!cu)posPlayer.y += FALL_STEP;
 				int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-				if (coldown == 1)
+				if (coldown == 1 || cu)
 				{
 					if (sprite->animation() == JUMP_LEFT)
 						sprite->changeAnimation(STAND_LEFT);
@@ -257,7 +259,7 @@ void Player::update(int deltaTime)
 						sprite->changeAnimation(JUMP_RIGHT);
 				}
 			}
-		}
+		//}
 	}
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }

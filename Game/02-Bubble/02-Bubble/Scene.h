@@ -27,9 +27,9 @@ public:
 
 private:
 	void initShaders();
-	void setPlayers();
-	void setFlags();
 	void collisions();
+	void setSprites();
+	void setMap();
 
 private:
 	TileMap *map;
@@ -38,13 +38,13 @@ private:
 	Flag* flag;
 	Flag* flag2;
 	Lever* lever;
-	Lever* lever2;
 	Box* box;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
 	int SceneState;
 	int camera, scroll;
+	bool leverActivated;
 };
 
 

@@ -34,7 +34,7 @@ void Box::update(int deltaTime)
 		{
 			if (contact) {
 				if (map->collisionMoveLeft(posBox - glm::ivec2(5, 0), glm::ivec2(72, 72)) == 0)
-					posBox.x -= 6;
+					posBox.x -= 3;
 			}
 
 		}
@@ -42,7 +42,7 @@ void Box::update(int deltaTime)
 		{
 			if (contact) {
 				if (map->collisionMoveRight(posBox + glm::ivec2(5, 0), glm::ivec2(72, 72)) == 0)
-					posBox.x += 6;
+					posBox.x += 3;
 			}
 		}
 		if (inverted) {

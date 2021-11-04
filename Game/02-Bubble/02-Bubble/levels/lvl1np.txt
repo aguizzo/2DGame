@@ -1,0 +1,33 @@
+TILEMAP
+50 29 							-- Size of tile map in tiles
+36 36 							-- Tile size & block size
+images/nivelmetal.png 					-- Tilesheet
+3  6							-- Number of tiles in tilesheet
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  
+        abbbbbbc                                  
+        deemhhhi                                  
+        deef  o                                   
+        deef                                      
+        deef                   n                  
+        deekbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc       
+        deeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef       
+        deeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef       
+        deeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef       
+        ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhi       
+                                                  
+                                                  
+                                  abbbbbc         
+            n                     ghhhhhi         
+        abbbbbc                                   
+        ghhhhhi                                   
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  

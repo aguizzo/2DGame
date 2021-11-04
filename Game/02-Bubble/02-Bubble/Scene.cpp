@@ -33,7 +33,6 @@ Scene::Scene()
 	flag = NULL;
 	flag2 = NULL;
 	lever = NULL;
-	lever2 = NULL;
 	box = NULL;
 }
 
@@ -49,8 +48,6 @@ Scene::~Scene()
 		delete flag;
 	if (lever != NULL)
 		delete lever;
-	if (lever2 != NULL)
-		delete lever2;
 	if (box != NULL)
 		delete box;
 }
@@ -61,28 +58,12 @@ void Scene::init()
 	initShaders();
 	SceneState = PLAYING;
 	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	setPlayers();
-	setFlags();
-
-	lever = new Lever();
-	lever->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
-	lever->setPosition(glm::vec2(28 * map->getTileSize(), 11 * map->getTileSize()));
-	lever->setTileMap(map);
-
-	lever2 = new Lever();
-	lever2->init(glm::ivec2(SCREEN_X, SCREEN_Y), true, texProgram);
-	lever2->setPosition(glm::vec2(22 * map->getTileSize(), 17 * map->getTileSize()));
-	lever2->setTileMap(map);
-
-	box = new Box();
-	box->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
-	box->setPosition(glm::vec2(22 * map->getTileSize(), 7 * map->getTileSize()));
-	box->setTileMap(map);
-
+	setSprites();
 	camera = WORLD_WIDTH / 2;
 	scroll = 0;
 	projection = glm::ortho(float(camera - SCREEN_WIDTH/PROPORTION - scroll), float(camera + SCREEN_WIDTH/PROPORTION + scroll), float(WORLD_HEIGHT/2 + SCREEN_HEIGHT/PROPORTION + scroll*PROPORTION), float(WORLD_HEIGHT/2 - SCREEN_HEIGHT/PROPORTION - scroll*PROPORTION));
 	currentTime = 0.0f;
+	leverActivated = false;
 }
 
 void Scene::update(int deltaTime)
@@ -145,7 +126,6 @@ void Scene::render()
 	flag->render();
 	flag2->render();
 	lever->render();
-	lever2->render();
 	box->render();
 }
 
@@ -179,18 +159,18 @@ void Scene::initShaders()
 	fShader.free();
 }
 
-void Scene::setPlayers() {
+
+void Scene::setSprites() {
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
+
 	player2 = new Player();
 	player2->init(glm::ivec2(SCREEN_X, SCREEN_Y), true, texProgram);
 	player2->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), WORLD_HEIGHT - INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player2->setTileMap(map);
-}
 
-void Scene::setFlags() {
 	flag = new Flag();
 	flag->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, false);
 	flag->setPosition(glm::vec2(FLAG_X * map->getTileSize(), FLAG_Y * map->getTileSize()));
@@ -200,15 +180,35 @@ void Scene::setFlags() {
 	flag2->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, true);
 	flag2->setPosition(glm::vec2(FLAG2_X * map->getTileSize(), FLAG2_Y * map->getTileSize()));
 	flag2->setTileMap(map);
+
+	lever = new Lever();
+	lever->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
+	lever->setPosition(glm::vec2(28 * map->getTileSize(), 11 * map->getTileSize()));
+	lever->setTileMap(map);
+
+	box = new Box();
+	box->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
+	box->setPosition(glm::vec2(22 * map->getTileSize(), 7 * map->getTileSize()));
+	box->setTileMap(map);
+}
+
+void Scene::setMap() {
+	player->setTileMap(map);
+	player2->setTileMap(map);
+	flag->setTileMap(map);
+	flag2->setTileMap(map);
+	lever->setTileMap(map);
+	box->setTileMap(map);
 }
 
 void Scene::collisions() {
-	if ((abs(player->getPosition().x + 15 - lever->getPosition().x) <= 36) && (abs(player->getPosition().y + 36 - lever->getPosition().y) <= 36))
+	if (!leverActivated && (abs(player->getPosition().x + 15 - lever->getPosition().x) <= 36) && (abs(player->getPosition().y + 36 - lever->getPosition().y) <= 36))
 	{
 		lever->activate();
+		leverActivated = true;
+		map = TileMap::createTileMap("levels/lvl1np.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+		setMap();
 	}
-	if ((abs(player2->getPosition().x + 15 - lever2->getPosition().x) <= 36) && (abs(player2->getPosition().y + 36 - lever2->getPosition().y) <= 36))
-		lever2->activate();
 
 	int cr = box->getPosition().x - (player->getPosition().x + 36) + 15;
 	int cl = player->getPosition().x + 15 - (box->getPosition().x + 36);
@@ -216,28 +216,32 @@ void Scene::collisions() {
 	int cli = player2->getPosition().x + 15 - (box->getPosition().x + 36);
 	int cu = box->getPosition().y - (player->getPosition().y + 72);
 	int cui = player2->getPosition().y - (box->getPosition().y + 72);
-	if ((cr >= 0 && cr <= 36) && (abs(player->getPosition().y + 36 - box->getPosition().y) <= 36)) {
+	if ((cr >= 0 && cr <= 36) && (abs(player->getPosition().y + 35 - box->getPosition().y) <= 36)) {
 		box->setContact(true);
 		player->setContact("right");
 	}
-	else if ((cri >= 0 && cri <= 36) && (abs(player2->getPosition().y + 36 - box->getPosition().y) <= 36)) {
+	else if ((cri >= 0 && cri <= 36) && (abs(player2->getPosition().y + 35 - box->getPosition().y) <= 36)) {
 		box->setContact(true);
 		player2->setContact("right");
 	}
-	else if ((cl >= 0 && cl <= 36) && (abs(player->getPosition().y + 36 - box->getPosition().y) <= 36))
+	else if ((cl >= 0 && cl <= 36) && (abs(player->getPosition().y + 35 - box->getPosition().y) <= 36))
 	{
 		box->setContact(true);
 		player->setContact("left");
 	}
-	else if ((cli >= 0 && cli <= 36) && (abs(player2->getPosition().y + 36 - box->getPosition().y) <= 36))
+	else if ((cli >= 0 && cli <= 36) && (abs(player2->getPosition().y + 35 - box->getPosition().y) <= 36))
 	{
 		box->setContact(true);
 		player2->setContact("left");
 	}
-	else if ((cu <= 6 && cu >= 0) && (player->getPosition().x + 72 - 15 >= box->getPosition().x) && (player->getPosition().x + 15 <= box->getPosition().x + 72))
+	else if ((cu <= 6 && cu >= 0) && (player->getPosition().x + 72 - 15 >= box->getPosition().x) && (player->getPosition().x + 15 <= box->getPosition().x + 72)) {
+		player->setPosition(glm::vec2(player->getPosition().x, box->getPosition().y-72));
 		player->setContact("up");
-	else if((cui <= 6 && cui >= 0) && (player2->getPosition().x + 72 - 15 >= box->getPosition().x) && (player2->getPosition().x + 15 <= box->getPosition().x + 72))
+	}
+	else if ((cui <= 6 && cui >= 0) && (player2->getPosition().x + 72 - 15 >= box->getPosition().x) && (player2->getPosition().x + 15 <= box->getPosition().x + 72)) {
+		player2->setPosition(glm::vec2(player->getPosition().x, box->getPosition().y-72));
 		player2->setContact("up");
+	}
 	else
 	{
 		box->setContact(false);
