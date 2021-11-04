@@ -21,7 +21,7 @@ private:
 	float currentTime;
 	TexturedQuad* background;
 	glm::mat4 projection;
-	Texture image;
+	Texture bgImage;
 	Text text;
 };
 

@@ -44,8 +44,6 @@ void Menu::init()
 
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	if (!text.init("fonts/MMRock9.ttf"))
-		//if(!text.init("fonts/OpenSans-Bold.ttf"))
-		//if(!text.init("fonts/DroidSerif.ttf"))
 		cout << "Could not load font!!!" << endl;
 }
 
@@ -93,7 +91,7 @@ void Menu::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	background->render(bgImage);
-	text.render("MEGAMAN", glm::vec2(900, 500), 14, glm::vec4(1, 1, 1, 1));
+	text.render("NAMEGEM", glm::vec2(450, 200), 64, glm::vec4(0, 0, 1, 1));
 	updateMenuOptions();
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
@@ -107,7 +105,7 @@ void Menu::render()
 void Menu::updateMenuOptions() {
 	if (option == 0)
 	{
-		text.render("Play ", glm::vec2(570, 380), 30, glm::vec4(1, 1, 1, 1));
+		text.render("Play ", glm::vec2(570, 380), 30, glm::vec4(0, 0.4, 0.4, 1));
 		text.render("How to play ", glm::vec2(570, 420), 14, glm::vec4(1, 1, 1, 1));
 		text.render("Credits ", glm::vec2(570, 460), 14, glm::vec4(1, 1, 1, 1));
 		glm::vec2 geom2[2] = { glm::vec2(970.f, 530.f), glm::vec2(970 + 64.f, 530 + 64.f) };
@@ -117,7 +115,7 @@ void Menu::updateMenuOptions() {
 	else if (option == 1)
 	{
 		text.render("Play ", glm::vec2(570, 380), 14, glm::vec4(1, 1, 1, 1));
-		text.render("How to play ", glm::vec2(570, 420), 30, glm::vec4(1, 1, 1, 1));
+		text.render("How to play ", glm::vec2(570, 420), 30, glm::vec4(0, 0.4, 0.4, 1));
 		text.render("Credits ", glm::vec2(570, 460), 14, glm::vec4(1, 1, 1, 1));
 		glm::vec2 geom2[2] = { glm::vec2(1120.f, 600.f), glm::vec2(1120 + 64.f, 600 + 64.f) };
 		glm::vec2 texCoords2[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
@@ -127,7 +125,7 @@ void Menu::updateMenuOptions() {
 	{
 		text.render("Play ", glm::vec2(570, 380), 14, glm::vec4(1, 1, 1, 1));
 		text.render("How to play ", glm::vec2(570, 420), 14, glm::vec4(1, 1, 1, 1));
-		text.render("Credits ", glm::vec2(570, 460), 30, glm::vec4(1, 1, 1, 1));
+		text.render("Credits ", glm::vec2(570, 460), 30, glm::vec4(0, 0.4, 0.4, 1));
 		glm::vec2 geom2[2] = { glm::vec2(1010.f, 660.f), glm::vec2(1010 + 64.f, 660 + 64.f) };
 		glm::vec2 texCoords2[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 		cursor = TexturedQuad::createTexturedQuad(geom2, texCoords2, texProgram);

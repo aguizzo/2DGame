@@ -30,16 +30,12 @@ void Credits::init()
 
 	int option = 0;
 
-	glm::vec2 geom[2] = {glm::vec2(0.f, 0.f), glm::vec2(640.f, 480.f)};
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(1800.f, 1000.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 	background = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
-	image.loadFromFile("images/sisao.png",
-		TEXTURE_PIXEL_FORMAT_RGBA);	
-
+	bgImage.loadFromFile("images/mega_bg.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
-	if (!text.init("fonts/OpenSans-Regular.ttf"))
-		//if(!text.init("fonts/OpenSans-Bold.ttf"))
-		//if(!text.init("fonts/DroidSerif.ttf"))
+	if (!text.init("fonts/MMRock9.ttf"))
 		cout << "Could not load font!!!" << endl;
 }
 
@@ -53,7 +49,6 @@ void Credits::update(int deltaTime) {
 
 void Credits::render() 
 {
-	text.render("Credits", glm::vec2(570, 380), 30, glm::vec4(1, 1, 1, 1));
 	glm::mat4 modelview;
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
@@ -61,7 +56,8 @@ void Credits::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
-	background->render(image);
+	background->render(bgImage);
+	text.render("Credits", glm::vec2(570, 380), 30, glm::vec4(1, 1, 1, 1));
 }
 
 
