@@ -4,7 +4,9 @@
 
 #include "Scene.h"
 #include "Menu.h"
-
+#include "HowToPlay.h"
+#include "Credits.h"
+#include <irrKlang.h>
 
 #define SCREEN_WIDTH 960
 #define SCREEN_HEIGHT 540
@@ -46,6 +48,7 @@ public:
 	
 	bool getKey(int key) const;
 	bool getSpecialKey(int key) const;
+	void setSpecialKey(int key);
 
 private:
 	int State;
@@ -54,6 +57,9 @@ private:
 	bool keys[256], specialKeys[256]; // Store key states so that 
 	                                  // we can have access at any time
 	Menu menu;
+	HowToPlay howTo;
+	Credits credits;
+	irrklang::ISoundEngine* engine;
 };
 
 

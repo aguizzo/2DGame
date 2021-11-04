@@ -9,6 +9,7 @@
 #include "Flag.h"
 #include "Lever.h"
 #include "box.h"
+#include "TexturedQuad.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -45,6 +46,8 @@ private:
 	int SceneState;
 	int camera, scroll;
 	bool leverActivated;
+	TexturedQuad* background;
+	Texture bgImage;
 };
 
 
