@@ -9,6 +9,7 @@
 #include "Flag.h"
 #include "Lever.h"
 #include "box.h"
+#include "portal.h"
 #include "TexturedQuad.h"
 
 // Scene contains all the entities of our game.
@@ -40,12 +41,13 @@ private:
 	Flag* flag2;
 	Lever* lever;
 	Box* box;
+	Portal* portal;
+	Portal* portal2;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
-	int SceneState;
-	int camera, scroll;
-	bool leverActivated;
+	int SceneState, camera, scroll;
+	bool leverActivated, touchingPortal;
 	TexturedQuad* background;
 	Texture bgImage;
 };

@@ -14,12 +14,12 @@ images/nivelmetal.png 					-- Tilesheet
         deemhhhi                                  
         deef  o                                   
         deef                                      
-        deef                   n                  
+        deef                                      
         deekbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc       
         deeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef       
         deeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef       
         deeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef       
-        ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhi       
+        ghhhhhhh  hhhhhhhhhhhhhhhhhhhhhhhhi       
                                                   
                                                   
                                   abbbbbc         

@@ -86,7 +86,7 @@ void Menu::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	background->render(bgImage);
-	text.render("NAMEGEM", glm::vec2(450, 200), 64, glm::vec4(0, 0, 1, 1));
+	text.render("NAMAGEM", glm::vec2(450, 200), 64, glm::vec4(0, 0, 1, 1));
 	updateMenuOptions();
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);

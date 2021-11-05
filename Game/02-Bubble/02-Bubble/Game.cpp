@@ -17,13 +17,13 @@ void Game::init()
 	howTo.init();
 	credits.init();
 	scene.init();
-	engine = irrklang::createIrrKlangDevice();
-	engine->setSoundVolume(0.5f);
-	if (!engine)
-	{
-		printf("Could not startup engine\n");
-	}
-	engine->play2D("sounds/01_Stage_Select.mp3", true);
+	//engine = irrklang::createIrrKlangDevice();
+	//engine->setSoundVolume(0.5f);
+	//if (!engine)
+	//{
+	//	printf("Could not startup engine\n");
+	//}
+	//engine->play2D("sounds/01_Stage_Select.mp3", true);
 }
 
 bool Game::update(int deltaTime)
@@ -72,8 +72,8 @@ void Game::changeState(char c)
 	{
 	case 'M': 
 		State = MENU;
-		engine->stopAllSounds();
-		engine->play2D("sounds/01_Stage_Select.mp3", true);
+		//engine->stopAllSounds();
+		//engine->play2D("sounds/01_Stage_Select.mp3", true);
 		break;
 	case 'H':
 		State = HOW_TO;
@@ -83,8 +83,8 @@ void Game::changeState(char c)
 		break;
 	case 'S':
 		State = SCENE;
-		engine->stopAllSounds();
-		engine->play2D("sounds/06_Guts_Man.mp3", true);
+		//engine->stopAllSounds();
+		//engine->play2D("sounds/06_Guts_Man.mp3", true);
 		break;
 	}
 }
