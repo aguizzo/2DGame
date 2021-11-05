@@ -159,6 +159,12 @@ void Game::playSoundEffect(string effect) {
 	engine->play2D(c, false);
 }
 
+void Game::playMusic(string track) {
+	char const* c = track.data();
+	engine->play2D(c, true);
+}
+
+
 void Game::stopSound() {
 	engine->stopAllSounds();
 }

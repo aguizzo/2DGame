@@ -31,12 +31,12 @@ public:
 private:
 	void initShaders();
 	void collisions();
-	void setPlayerSprites();
-	void setPlayer2Sprites();
-	void setFlagSprites();
-	void setFlag2Sprites();
-	void setLeverSprites();
-	void setBoxSprites();
+	void setPlayerSprites(int x, int y);
+	void setPlayer2Sprites(int x, int y);
+	void setFlagSprites(int x, int y);
+	void setFlag2Sprites(int x, int y);
+	void setLeverSprites(int x, int y);
+	void setBoxSprites(int x, int y);
 	void setMap();
 	void initLvl(int lvl);
 

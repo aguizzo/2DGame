@@ -37,6 +37,7 @@ public:
 	void render();
 	void changeState(char c);
 	void playSoundEffect(string effect);
+	void playMusic(string track);
 	void stopSound();
 
 	// Input callback methods
