@@ -11,7 +11,7 @@
 #define INIT_PLAYER_X_TILES 18
 #define INIT_PLAYER_Y_TILES 9
 
-#define FLAG_X 15
+#define FLAG_X 14
 #define FLAG_Y 10
 
 #define FLAG2_X 23
@@ -57,11 +57,15 @@ void Scene::init()
 {
 	initShaders();
 	SceneState = PLAYING;
-	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(1800.f, 1000.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 	background = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
 	bgImage.loadFromFile("images/mega_bg2.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	
+	lvl = 1;
+	initLvl(1);
+
 	setSprites();
 	camera = WORLD_WIDTH / 2;
 	scroll = 0;
@@ -70,11 +74,41 @@ void Scene::init()
 	leverActivated = false;
 	audio = false;
 	count = 0;
+	
+}
+
+void Scene::initLvl(int lvl) {
+	switch (lvl) {
+		case 1: 
+		{
+			map = TileMap::createTileMap("levels/lvl5.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+			//map = TileMap::createTileMap("levels/lvltest.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+			break;
+		}
+		case 2:
+		{
+			break;
+		}
+		case 3:
+		{
+			break;
+		}
+		case 4:
+		{
+			break;
+		}
+		case 5:
+		{
+			break;
+		}
+	}
+	
 }
 
 void Scene::reset() {
 	SceneState = PLAYING;
-	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	map = TileMap::createTileMap("levels/lvl5.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	//map = TileMap::createTileMap("levels/lvltest.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	setSprites();
 	camera = WORLD_WIDTH / 2;
 	scroll = 0;
@@ -202,37 +236,57 @@ void Scene::initShaders()
 }
 
 
-void Scene::setSprites() {
+void Scene::setPlayerSprites()
+{
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player->setTileMap(map);
+}
 
+void Scene::setPlayer2Sprites()
+{
 	player2 = new Player();
 	player2->init(glm::ivec2(SCREEN_X, SCREEN_Y), true, texProgram);
 	player2->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize(), WORLD_HEIGHT - INIT_PLAYER_Y_TILES * map->getTileSize()));
 	player2->setTileMap(map);
-
+}
+	
+void Scene::setFlagSprites()
+{
 	flag = new Flag();
 	flag->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, false);
 	flag->setPosition(glm::vec2(FLAG_X * map->getTileSize(), FLAG_Y * map->getTileSize()));
 	flag->setTileMap(map);
+}
+	
 
+void Scene::setFlag2Sprites()
+{
 	flag2 = new Flag();
 	flag2->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, true);
 	flag2->setPosition(glm::vec2(FLAG2_X * map->getTileSize(), FLAG2_Y * map->getTileSize()));
 	flag2->setTileMap(map);
+}
+	
 
+void Scene::setLeverSprites()
+{
 	lever = new Lever();
 	lever->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
 	lever->setPosition(glm::vec2(28 * map->getTileSize(), 11 * map->getTileSize()));
 	lever->setTileMap(map);
-
+}
+	
+void Scene::setBoxSprites() 
+{
 	box = new Box();
 	box->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
-	box->setPosition(glm::vec2(22 * map->getTileSize(), 7 * map->getTileSize()));
+	//box->setPosition(glm::vec2(22 * map->getTileSize(), 7 * map->getTileSize()));
+	box->setPosition(glm::vec2(0 * map->getTileSize(), 0 * map->getTileSize()));
 	box->setTileMap(map);
 }
+
 
 void Scene::setMap() {
 	player->setTileMap(map);
@@ -248,8 +302,8 @@ void Scene::collisions() {
 	{
 		lever->activate();
 		leverActivated = true;
-		map = TileMap::createTileMap("levels/lvl1np.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-		setMap();
+		//map = TileMap::createTileMap("levels/lvl1np.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+		//setMap();
 	}
 
 	int cr = box->getPosition().x - (player->getPosition().x + 36) + 15;

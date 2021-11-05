@@ -104,7 +104,8 @@ void Game::keyPressed(int key)
 {
 	if(key == 27) // Escape code
 		bPlay = false;
-	
+	if (key == 'm')
+		engine->stopAllSounds();
 	
 	//if (key == 13)
 		

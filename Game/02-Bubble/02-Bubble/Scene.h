@@ -26,12 +26,19 @@ public:
 	void update(int deltaTime);
 	void render();
 	void reset();
+	
 
 private:
 	void initShaders();
 	void collisions();
-	void setSprites();
+	void setPlayerSprites();
+	void setPlayer2Sprites();
+	void setFlagSprites();
+	void setFlag2Sprites();
+	void setLeverSprites();
+	void setBoxSprites();
 	void setMap();
+	void initLvl(int lvl);
 
 private:
 	TileMap *map;
@@ -51,6 +58,7 @@ private:
 	Texture bgImage;
 	bool audio;
 	int count;
+	int lvl;
 };
 
 

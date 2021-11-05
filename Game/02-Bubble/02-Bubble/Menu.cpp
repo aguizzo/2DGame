@@ -96,32 +96,38 @@ void Menu::render()
 }
 
 void Menu::updateMenuOptions() {
-	if (option == 0)
+	switch (option)
 	{
-		text.render("Play ", glm::vec2(570, 380), 30, glm::vec4(0, 1, 1, 1));
-		text.render("How to play ", glm::vec2(570, 420), 14, glm::vec4(1, 1, 1, 1));
-		text.render("Credits ", glm::vec2(570, 460), 14, glm::vec4(1, 1, 1, 1));
-		glm::vec2 geom2[2] = { glm::vec2(0.f, 0.f), glm::vec2(0.f + 64.f, 0.f + 64.f) };
-		glm::vec2 texCoords2[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
-		cursor = TexturedQuad::createTexturedQuad(geom2, texCoords2, texProgram);
-	}
-	else if (option == 1)
-	{
-		text.render("Play ", glm::vec2(570, 380), 14, glm::vec4(1, 1, 1, 1));
-		text.render("How to play ", glm::vec2(570, 420), 30, glm::vec4(0, 1, 1, 1));
-		text.render("Credits ", glm::vec2(570, 460), 14, glm::vec4(1, 1, 1, 1));
-		glm::vec2 geom2[2] = { glm::vec2(1120.f, 600.f), glm::vec2(1120 + 64.f, 600 + 64.f) };
-		glm::vec2 texCoords2[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
-		cursor = TexturedQuad::createTexturedQuad(geom2, texCoords2, texProgram);
-	}
-	else if (option == 2)
-	{
-		text.render("Play ", glm::vec2(570, 380), 14, glm::vec4(1, 1, 1, 1));
-		text.render("How to play ", glm::vec2(570, 420), 14, glm::vec4(1, 1, 1, 1));
-		text.render("Credits ", glm::vec2(570, 460), 30, glm::vec4(0, 1, 1, 1));
-		glm::vec2 geom2[2] = { glm::vec2(1010.f, 660.f), glm::vec2(1010 + 64.f, 660 + 64.f) };
-		glm::vec2 texCoords2[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
-		cursor = TexturedQuad::createTexturedQuad(geom2, texCoords2, texProgram);
+		case 0:
+		{
+			text.render("Play ", glm::vec2(570, 380), 30, glm::vec4(0, 1, 1, 1));
+			text.render("How to play ", glm::vec2(570, 420), 14, glm::vec4(1, 1, 1, 1));
+			text.render("Credits ", glm::vec2(570, 460), 14, glm::vec4(1, 1, 1, 1));
+			glm::vec2 geom[2]= { glm::vec2(0.f, 0.f), glm::vec2(0.f + 64.f, 0.f + 64.f) };
+			glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+			cursor = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
+			break;
+		}
+		case 1:
+		{
+			text.render("Play ", glm::vec2(570, 380), 14, glm::vec4(1, 1, 1, 1));
+			text.render("How to play ", glm::vec2(570, 420), 30, glm::vec4(0, 1, 1, 1));
+			text.render("Credits ", glm::vec2(570, 460), 14, glm::vec4(1, 1, 1, 1));
+			glm::vec2 geom[2] = { glm::vec2(1120.f, 600.f), glm::vec2(1120 + 64.f, 600 + 64.f) };
+			glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+			cursor = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
+			break;
+		}
+		case 2: 
+		{
+			text.render("Play ", glm::vec2(570, 380), 14, glm::vec4(1, 1, 1, 1));
+			text.render("How to play ", glm::vec2(570, 420), 14, glm::vec4(1, 1, 1, 1));
+			text.render("Credits ", glm::vec2(570, 460), 30, glm::vec4(0, 1, 1, 1));
+			glm::vec2 geom[2] = { glm::vec2(1010.f, 660.f), glm::vec2(1010 + 64.f, 660 + 64.f) };
+			glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+			cursor = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
+			break;
+		}
 	}
 }
 
