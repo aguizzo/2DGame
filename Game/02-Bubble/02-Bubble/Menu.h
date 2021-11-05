@@ -4,7 +4,6 @@
 #include "TileMap.h"
 #include "Player.h"
 #include "Text.h"
-#include <irrKlang.h>
 
 class Menu
 {
@@ -29,8 +28,6 @@ private:
 	TileMap *map;
 	Text text;
 	int option;
-
-	irrklang::ISoundEngine* engine;
 };
 
 

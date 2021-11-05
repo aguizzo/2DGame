@@ -29,8 +29,6 @@ void Menu::init()
 {
 	initShaders();
 	currentTime = 0.0f;
-	engine = irrklang::createIrrKlangDevice();
-	engine->setSoundVolume(0.5f);
 		
 	int option = 0;
 
@@ -51,13 +49,13 @@ void Menu::update(int deltaTime) {
 		Game::instance().setSpecialKey(GLUT_KEY_DOWN);
 		option += 1;
 		option = option % 3;
-		engine->play2D("sounds/11_Dink.wav", false);
+		Game::instance().playSoundEffect("sounds/11_Dink.wav");
 	}
 	else if (Game::instance().getSpecialKey(GLUT_KEY_UP)) {
 		Game::instance().setSpecialKey(GLUT_KEY_UP);
 		option += 2;
 		option = option % 3;
-		engine->play2D("sounds/11_Dink.wav", false);
+		Game::instance().playSoundEffect("sounds/11_Dink.wav");
 	}
 	if (Game::instance().getKey(13)) 
 	{	

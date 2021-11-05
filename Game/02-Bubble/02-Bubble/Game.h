@@ -36,7 +36,9 @@ public:
 	bool update(int deltaTime);
 	void render();
 	void changeState(char c);
-	
+	void playSoundEffect(string effect);
+	void stopSound();
+
 	// Input callback methods
 	void keyPressed(int key);
 	void keyReleased(int key);

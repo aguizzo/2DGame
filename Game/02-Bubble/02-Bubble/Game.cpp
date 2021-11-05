@@ -70,22 +70,33 @@ void Game::changeState(char c)
 {
 	switch (c) 
 	{
-	case 'M': 
-		State = MENU;
-		engine->stopAllSounds();
-		engine->play2D("sounds/01_Stage_Select.mp3", true);
-		break;
-	case 'H':
-		State = HOW_TO;
-		break;
-	case 'C':
-		State = CREDITS;
-		break;
-	case 'S':
-		State = SCENE;
-		engine->stopAllSounds();
-		engine->play2D("sounds/06_Guts_Man.mp3", true);
-		break;
+		case 'M': 
+		{
+			State = MENU;
+			engine->stopAllSounds();
+			engine->play2D("sounds/01_Stage_Select.mp3", true);
+			break;
+		}
+		case 'H': 
+		{
+			State = HOW_TO;
+			break;
+		}
+		case 'C': 
+		{
+			State = CREDITS;
+			engine->stopAllSounds();
+			engine->play2D("sounds/15_Epilogue.mp3", true);
+			break;
+		}
+		case 'S':
+		{
+			State = SCENE;
+			scene.reset();
+			engine->stopAllSounds();
+			engine->play2D("sounds/06_Guts_Man.mp3", true);
+			break;
+		}
 	}
 }
 
@@ -142,7 +153,12 @@ void Game::setSpecialKey(int key) {
 	specialKeyReleased(key);
 }
 
+void Game::playSoundEffect(string effect) {
+	char const* c = effect.data();
+	engine->play2D(c, false);
+}
 
-
-
+void Game::stopSound() {
+	engine->stopAllSounds();
+}
 

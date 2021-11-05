@@ -155,9 +155,12 @@ void Player::update(int deltaTime)
 			int colup = map->collisionMoveUpInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
 			if (jumpAngle < 90 && colup == 1) {
 				jumpAngle = 180 - jumpAngle;
-
 			}
-			else if (colup == 2) Game::instance().init();
+			else if (colup == 2) 
+			{
+				Game::instance().stopSound();
+				Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
+			}
 			else if (jumpAngle == 180)
 			{
 
@@ -169,7 +172,11 @@ void Player::update(int deltaTime)
 				posPlayer.y = int(startY + MAX_JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
 				if (jumpAngle > 90) {
 					int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-					if (coldown == 2) Game::instance().init();
+					if (coldown == 2)
+					{
+						Game::instance().stopSound();
+						Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
+					}
 					else bJumping = coldown == 0;
 				}
 			}
@@ -185,24 +192,37 @@ void Player::update(int deltaTime)
 				jumpAngle = 180 - jumpAngle;
 
 			}
-			else if (colup == 2) Game::instance().init();
+			else if (colup == 2) 
+			{
+				Game::instance().stopSound();
+				Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
+			}
 			else if (jumpAngle == 180)
 			{
 
 				bJumping = false;
 				posPlayer.y = startY;
+				
 			}
 			else
 			{
 				posPlayer.y = int(startY - MAX_JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
 				if (jumpAngle > 90) {
 					int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-					if (coldown == 2) Game::instance().init();
-					else bJumping = coldown == 0;
+					if (coldown == 2) 
+					{
+						Game::instance().stopSound();
+						Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
+					}
+						
+					else bJumping = coldown == 0;					
 				}
 			}
 		}
-		if (!Game::instance().getSpecialKey(GLUT_KEY_UP) && jumpAngle > 30) bJumping = false;
+		if (!Game::instance().getSpecialKey(GLUT_KEY_UP) && jumpAngle > 30) 
+			bJumping = false;
+		if (jumpAngle < 5)
+			Game::instance().playSoundEffect("sounds/06_MegamanLand.wav");
 	}
 	else
 	{
@@ -225,7 +245,10 @@ void Player::update(int deltaTime)
 						startY = posPlayer.y;
 					}
 				}
-				else if (coldown == 2) Game::instance().init();
+				else if (coldown == 2) {
+					Game::instance().stopSound();
+					Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
+				}
 				else {
 					if (sprite->animation() == STAND_LEFT)
 						sprite->changeAnimation(JUMP_LEFT);
@@ -251,7 +274,11 @@ void Player::update(int deltaTime)
 						startY = posPlayer.y;
 					}
 				}
-				else if (coldown == 2) Game::instance().init();
+				else if (coldown == 2)
+				{
+					Game::instance().stopSound();
+					Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
+				}
 				else {
 					if (sprite->animation() == STAND_LEFT)
 						sprite->changeAnimation(JUMP_LEFT);

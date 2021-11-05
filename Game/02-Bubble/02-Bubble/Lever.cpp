@@ -60,4 +60,5 @@ void Lever::activate()
 {
 	if (inverted) sprite->changeAnimation(INVACTIVATED);
 	else sprite->changeAnimation(ACTIVATED);
+	Game::instance().playSoundEffect("sounds/05_MegaBuster.wav");
 }

@@ -25,6 +25,7 @@ public:
 	void init();
 	void update(int deltaTime);
 	void render();
+	void reset();
 
 private:
 	void initShaders();
@@ -48,6 +49,8 @@ private:
 	bool leverActivated;
 	TexturedQuad* background;
 	Texture bgImage;
+	bool audio;
+	int count;
 };
 
 

@@ -68,49 +68,86 @@ void Scene::init()
 	projection = glm::ortho(float(camera - SCREEN_WIDTH/PROPORTION - scroll), float(camera + SCREEN_WIDTH/PROPORTION + scroll), float(WORLD_HEIGHT/2 + SCREEN_HEIGHT/PROPORTION + scroll*PROPORTION), float(WORLD_HEIGHT/2 - SCREEN_HEIGHT/PROPORTION - scroll*PROPORTION));
 	currentTime = 0.0f;
 	leverActivated = false;
+	audio = false;
+	count = 0;
+}
+
+void Scene::reset() {
+	SceneState = PLAYING;
+	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	setSprites();
+	camera = WORLD_WIDTH / 2;
+	scroll = 0;
+	projection = glm::ortho(float(camera - SCREEN_WIDTH / PROPORTION - scroll), float(camera + SCREEN_WIDTH / PROPORTION + scroll), float(WORLD_HEIGHT / 2 + SCREEN_HEIGHT / PROPORTION + scroll * PROPORTION), float(WORLD_HEIGHT / 2 - SCREEN_HEIGHT / PROPORTION - scroll * PROPORTION));
+	currentTime = 0.0f;
+	leverActivated = false;
+	audio = false;
+	count = 0;
 }
 
 void Scene::update(int deltaTime)
 {
-	switch (SceneState) 
+	switch (SceneState)
 	{
-	case PLAYING:
-		currentTime += deltaTime;
-		player->update(deltaTime);
-		player2->update(deltaTime);
-		glm::vec2 currPos1 = player->getPosition();
-		glm::vec2 currPos2 = player2->getPosition();
-		camera = (currPos1.x + currPos2.x)/2;
-		if ((currPos1.y > WORLD_HEIGHT / 2) || (currPos2.y < WORLD_HEIGHT / 2)) init();
-		bool win1 = false;
-		if (abs(currPos1.x - currPos2.x) > SCREEN_WIDTH / 1.2)
-			scroll = abs(abs(currPos1.x - currPos2.x) - SCREEN_WIDTH / 1.2) / 2;
-		else scroll = 0;
-		if (currPos1.x >= (FLAG_X - 2.5) * map->getTileSize() && 
-			currPos1.x <= (FLAG_X + 1) * map->getTileSize() &&
-			currPos1.y >= (FLAG_Y) * map->getTileSize() &&
-			currPos1.y <= (FLAG_Y + 2) *map->getTileSize())
-			win1 = true;
-		else
-			win1 = false;
-		flag->update(deltaTime, win1);
-		bool win2 = false;
-		if (currPos2.x >= (FLAG2_X - 2.5) * map->getTileSize() &&
-			currPos2.x <= (FLAG2_X + 1) * map->getTileSize() &&
-			currPos2.y <= (FLAG2_Y)*map->getTileSize() &&
-			currPos2.y >= (FLAG2_Y - 2) * map->getTileSize())
-			win2 = true;
-		else
-			win2 = false;
-		flag2->update(deltaTime, win2);
-		if (Game::instance().getKey(50)) {
-			Game::instance().changeState('M');
+		case PLAYING:
+		{
+			currentTime += deltaTime;
+			player->update(deltaTime);
+			player2->update(deltaTime);
+			glm::vec2 currPos1 = player->getPosition();
+			glm::vec2 currPos2 = player2->getPosition();
+			camera = (currPos1.x + currPos2.x) / 2;
+			if ((currPos1.y > WORLD_HEIGHT / 2) || (currPos2.y < WORLD_HEIGHT / 2)) reset();
+			bool win1 = false;
+			if (abs(currPos1.x - currPos2.x) > SCREEN_WIDTH / 1.2)
+				scroll = abs(abs(currPos1.x - currPos2.x) - SCREEN_WIDTH / 1.2) / 2;
+			else scroll = 0;
+			if (currPos1.x >= (FLAG_X - 2.5) * map->getTileSize() &&
+				currPos1.x <= (FLAG_X + 1) * map->getTileSize() &&
+				currPos1.y >= (FLAG_Y)*map->getTileSize() &&
+				currPos1.y <= (FLAG_Y + 2) * map->getTileSize())
+				win1 = true;
+			else
+				win1 = false;
+			flag->update(deltaTime, win1);
+			bool win2 = false;
+			if (currPos2.x >= (FLAG2_X - 2.5) * map->getTileSize() &&
+				currPos2.x <= (FLAG2_X + 1) * map->getTileSize() &&
+				currPos2.y <= (FLAG2_Y)*map->getTileSize() &&
+				currPos2.y >= (FLAG2_Y - 2) * map->getTileSize())
+				win2 = true;
+			else
+				win2 = false;
+			flag2->update(deltaTime, win2);
+			if (win1 && win2) {
+				Game::instance().stopSound();
+				SceneState = WON;
+			}
+			if (Game::instance().getKey(50)) {
+				Game::instance().changeState('M');
+			}
+			collisions();
+			box->update(deltaTime);
+			int bpos = box->getPosition().y;
+			if ((bpos >= (WORLD_HEIGHT / 2) - 42) && (bpos <= (WORLD_HEIGHT / 2) + 42)) box->setMid();
+			break;
 		}
-		collisions();
-		box->update(deltaTime);
-		int bpos = box->getPosition().y;
-		if ((bpos >= (WORLD_HEIGHT / 2) - 42) && (bpos <= (WORLD_HEIGHT / 2) + 42)) box->setMid();
-		break;
+		case WON:
+		{
+			currentTime += deltaTime;
+			count++;
+			player->update(deltaTime);
+			player2->update(deltaTime);
+			if (!audio) 
+			{
+				Game::instance().playSoundEffect("sounds/10_Victory!.mp3");
+				audio = true;
+			}
+			if (count >= 420) {
+				Game::instance().changeState('M');
+			}
+			break;
+		}
 	}
 	projection = glm::ortho(float(camera - SCREEN_WIDTH / PROPORTION - scroll), float(camera + SCREEN_WIDTH / PROPORTION + scroll), float(WORLD_HEIGHT / 2 + SCREEN_HEIGHT / PROPORTION + scroll / PROPORTION), float(WORLD_HEIGHT / 2 - SCREEN_HEIGHT / PROPORTION - scroll / PROPORTION));
 }
