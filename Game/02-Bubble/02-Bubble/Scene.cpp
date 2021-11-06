@@ -86,6 +86,17 @@ void Scene::initLvl(int lvl) {
 
 		}
 		case 2:
+		{	
+			map = TileMap::createTileMap("levels/lvl02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+			setPlayerSprites(45, 8);
+			setPlayer2Sprites(45, 20);
+			setFlagSprites(6, 14);
+			setFlag2Sprites(26, 18);
+			lever = NULL;
+			box = NULL;
+			break;
+		}
+		case 3:
 		{
 			map = TileMap::createTileMap("levels/lvl5.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 			setPlayerSprites(18, 9);
@@ -97,7 +108,11 @@ void Scene::initLvl(int lvl) {
 			setBoxSprites(0, 0);
 			break;
 		}
-		case 3:
+		case 4:
+		{
+	
+		}
+		case 5:
 		{
 			map = TileMap::createTileMap("levels/lvltest.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 			setPlayerSprites(18, 9);
@@ -107,13 +122,6 @@ void Scene::initLvl(int lvl) {
 			setLeverSprites(28, 11);
 			setBoxSprites(0, 0);
 			break;
-		}
-		case 4:
-		{
-			break;
-		}
-		case 5:
-		{
 			break;
 		}
 	}
@@ -243,6 +251,7 @@ void Scene::update(int deltaTime)
 				SceneState = PLAYING;
 				Game::instance().playMusic("sounds/06_Guts_Man.mp3");
 				audio = false;
+				count = 0;
 			}
 			break;
 		}

@@ -210,7 +210,7 @@ void Player::update(int deltaTime)
 				posPlayer.y = int(startY - MAX_JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
 				if (jumpAngle > 90) {
 					int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-					if (coldown == 2) 
+					if (coldown == 2 && !god) 
 					{
 						Game::instance().stopSound();
 						Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
