@@ -39,6 +39,7 @@ private:
 	void setBoxSprites(int x, int y);
 	void setMap();
 	void initLvl(int lvl);
+	void leverActivate();
 
 private:
 	TileMap *map;
@@ -51,7 +52,8 @@ private:
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
-	int SceneState;
+	int flag_x, flag2_x, flag_y, flag2_y;
+	int SceneState, PlayerState;
 	int camera, scroll;
 	bool leverActivated;
 	TexturedQuad* background;

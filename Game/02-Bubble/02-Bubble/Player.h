@@ -22,6 +22,7 @@ public:
 	void setPosition(const glm::vec2 &pos);
 	void setContact(string side);
 	glm::vec2 getPosition() { return posPlayer; }
+	void setGodMode(bool b);
 	
 private:
 	bool bJumping;
@@ -33,6 +34,7 @@ private:
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
+	bool god;
 
 };
 

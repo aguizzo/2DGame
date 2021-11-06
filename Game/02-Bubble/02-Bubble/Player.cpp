@@ -22,6 +22,7 @@ void Player::init(const glm::ivec2 &tileMapPos, bool inv, ShaderProgram &shaderP
 	inverted = inv;
 	bJumping = false;
 	jumpHeight = 0;
+	god = false;
 	cl = false, cr = false, cu = false;
 	if(inv) spritesheet.loadFromFile("images/megamaninv.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	else spritesheet.loadFromFile("images/megaman.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -156,7 +157,7 @@ void Player::update(int deltaTime)
 			if (jumpAngle < 90 && colup == 1) {
 				jumpAngle = 180 - jumpAngle;
 			}
-			else if (colup == 2) 
+			else if (colup == 2 && !god)
 			{
 				Game::instance().stopSound();
 				Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
@@ -172,7 +173,7 @@ void Player::update(int deltaTime)
 				posPlayer.y = int(startY + MAX_JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
 				if (jumpAngle > 90) {
 					int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-					if (coldown == 2)
+					if (coldown == 2 && !god)
 					{
 						Game::instance().stopSound();
 						Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
@@ -192,7 +193,7 @@ void Player::update(int deltaTime)
 				jumpAngle = 180 - jumpAngle;
 
 			}
-			else if (colup == 2) 
+			else if (colup == 2 && !god)
 			{
 				Game::instance().stopSound();
 				Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
@@ -245,7 +246,7 @@ void Player::update(int deltaTime)
 						startY = posPlayer.y;
 					}
 				}
-				else if (coldown == 2) {
+				else if (coldown == 2 && !god) {
 					Game::instance().stopSound();
 					Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
 				}
@@ -274,7 +275,7 @@ void Player::update(int deltaTime)
 						startY = posPlayer.y;
 					}
 				}
-				else if (coldown == 2)
+				else if (coldown == 2 && !god)
 				{
 					Game::instance().stopSound();
 					Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
@@ -330,5 +331,9 @@ void Player::setContact(string s)
 		cr = false;
 		cu = false;
 	}
+}
+
+void Player::setGodMode(bool b) {
+	god = b;
 }
 
