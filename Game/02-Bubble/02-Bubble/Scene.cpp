@@ -101,10 +101,9 @@ void Scene::initLvl(int lvl) {
 			map = TileMap::createTileMap("levels/lvl5.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 			setPlayerSprites(18, 9);
 			setPlayer2Sprites(18, 20);
-			setFlagSprites(14, 10);
-			setFlag2Sprites(23, 17);
-			//setLeverSprites(28, 11);
-			lever = NULL;
+			setFlagSprites(10, 10);
+			setFlag2Sprites(44, 21);
+			setLeverSprites(6, 11);
 			setBoxSprites(0, 0);
 			break;
 		}
@@ -220,6 +219,12 @@ void Scene::update(int deltaTime)
 						{
 							lvl = 3;
 							reset();
+						}
+						if (Game::instance().getKey('r'))
+						{
+							Game::instance().keyReleased('r');
+							if (lever != NULL)
+								removeBarrier();
 						}
 						if (Game::instance().getKey('g'))
 						{
@@ -426,10 +431,14 @@ void Scene::collisions() {
 void Scene::leverActivate()
 {
 	if (!leverActivated && (abs(player->getPosition().x + 15 - lever->getPosition().x) <= 36) && (abs(player->getPosition().y + 36 - lever->getPosition().y) <= 36))
-	{
-		lever->activate();
-		leverActivated = true;
-		if (lvl == 1) map = TileMap::createTileMap("levels/lvl1np.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-		setMap();
-	}
+		removeBarrier();
+}
+
+void Scene::removeBarrier()
+{
+	lever->activate();
+	leverActivated = true;
+	if (lvl == 3)
+		map = TileMap::createTileMap("levels/lvl5nb.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	setMap();
 }

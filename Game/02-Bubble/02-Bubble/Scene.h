@@ -40,7 +40,8 @@ private:
 	void setMap();
 	void initLvl(int lvl);
 	void leverActivate();
-
+	void removeBarrier();
+	
 private:
 	TileMap *map;
 	Player *player;
