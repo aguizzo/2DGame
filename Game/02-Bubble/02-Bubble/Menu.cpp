@@ -84,7 +84,7 @@ void Menu::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	background->render(bgImage);
-	text.render("NAMEGEM", glm::vec2(450, 200), 64, glm::vec4(0, 0, 1, 1));
+	text.render("NAMEGEM", glm::vec2(260, 200), 64, glm::vec4(0, 0, 1, 1));
 	updateMenuOptions();
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
@@ -100,30 +100,30 @@ void Menu::updateMenuOptions() {
 	{
 		case 0:
 		{
-			text.render("Play ", glm::vec2(570, 380), 30, glm::vec4(0, 1, 1, 1));
-			text.render("How to play ", glm::vec2(570, 420), 14, glm::vec4(1, 1, 1, 1));
-			text.render("Credits ", glm::vec2(570, 460), 14, glm::vec4(1, 1, 1, 1));
-			glm::vec2 geom[2]= { glm::vec2(0.f, 0.f), glm::vec2(0.f + 64.f, 0.f + 64.f) };
+			text.render("Play ", glm::vec2(410, 330), 30, glm::vec4(0, 1, 1, 1));
+			text.render("How to play ", glm::vec2(410, 370), 14, glm::vec4(1, 1, 1, 1));
+			text.render("Credits ", glm::vec2(410, 410), 14, glm::vec4(1, 1, 1, 1));
+			glm::vec2 geom[2]= { glm::vec2(370.f, 305.f), glm::vec2(370.f + 32.f, 305.f + 32.f) };
 			glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 			cursor = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
 			break;
 		}
 		case 1:
 		{
-			text.render("Play ", glm::vec2(570, 380), 14, glm::vec4(1, 1, 1, 1));
-			text.render("How to play ", glm::vec2(570, 420), 30, glm::vec4(0, 1, 1, 1));
-			text.render("Credits ", glm::vec2(570, 460), 14, glm::vec4(1, 1, 1, 1));
-			glm::vec2 geom[2] = { glm::vec2(1120.f, 600.f), glm::vec2(1120 + 64.f, 600 + 64.f) };
+			text.render("Play ", glm::vec2(410, 330), 14, glm::vec4(1, 1, 1, 1));
+			text.render("How to play ", glm::vec2(410, 370), 30, glm::vec4(0, 1, 1, 1));
+			text.render("Credits ", glm::vec2(410, 410), 14, glm::vec4(1, 1, 1, 1));
+			glm::vec2 geom[2] = { glm::vec2(370.f, 350.f), glm::vec2(370.f + 32.f, 350.f + 32.f) };
 			glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 			cursor = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
 			break;
 		}
 		case 2: 
 		{
-			text.render("Play ", glm::vec2(570, 380), 14, glm::vec4(1, 1, 1, 1));
-			text.render("How to play ", glm::vec2(570, 420), 14, glm::vec4(1, 1, 1, 1));
-			text.render("Credits ", glm::vec2(570, 460), 30, glm::vec4(0, 1, 1, 1));
-			glm::vec2 geom[2] = { glm::vec2(1010.f, 660.f), glm::vec2(1010 + 64.f, 660 + 64.f) };
+			text.render("Play ", glm::vec2(410, 330), 14, glm::vec4(1, 1, 1, 1));
+			text.render("How to play ", glm::vec2(410, 370), 14, glm::vec4(1, 1, 1, 1));
+			text.render("Credits ", glm::vec2(410, 410), 30, glm::vec4(0, 1, 1, 1));
+			glm::vec2 geom[2] = { glm::vec2(370.f, 380.f), glm::vec2(370.f + 32.f, 380.f + 32.f) };
 			glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 			cursor = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
 			break;

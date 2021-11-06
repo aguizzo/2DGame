@@ -104,7 +104,7 @@ void Scene::initLvl(int lvl) {
 			setFlagSprites(10, 10);
 			setFlag2Sprites(44, 21);
 			setLeverSprites(6, 11);
-			setBoxSprites(0, 0);
+			box = NULL;
 			break;
 		}
 		case 4:
@@ -250,13 +250,17 @@ void Scene::update(int deltaTime)
 				audio = true;
 			}
 			if (count >= 420) {
-				//Game::instance().changeState('M');
-				lvl++;
-				initLvl(lvl);
-				SceneState = PLAYING;
-				Game::instance().playMusic("sounds/06_Guts_Man.mp3");
-				audio = false;
-				count = 0;
+				if (lvl == 5)
+					Game::instance().changeState('C');
+				else
+				{
+					lvl++;
+					initLvl(lvl);
+					SceneState = PLAYING;
+					Game::instance().playMusic("sounds/06_Guts_Man.mp3");
+					audio = false;
+					count = 0;
+				}	
 			}
 			break;
 		}
