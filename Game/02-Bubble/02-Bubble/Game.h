@@ -39,6 +39,7 @@ public:
 	void playSoundEffect(string effect);
 	void playMusic(string track);
 	void stopSound();
+	void resetLvl();
 
 	// Input callback methods
 	void keyPressed(int key);

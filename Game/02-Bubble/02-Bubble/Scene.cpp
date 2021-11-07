@@ -139,6 +139,8 @@ void Scene::reset() {
 	//map = TileMap::createTileMap("levels/lvltest.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	//setSprites();
 	initLvl(lvl);
+	Game::instance().stopSound();
+	Game::instance().playMusic("sounds/06_Guts_Man.mp3");
 	camera = WORLD_WIDTH / 2;
 	scroll = 0;
 	projection = glm::ortho(float(camera - SCREEN_WIDTH / PROPORTION - scroll), float(camera + SCREEN_WIDTH / PROPORTION + scroll), float(WORLD_HEIGHT / 2 + SCREEN_HEIGHT / PROPORTION + scroll * PROPORTION), float(WORLD_HEIGHT / 2 - SCREEN_HEIGHT / PROPORTION - scroll * PROPORTION));

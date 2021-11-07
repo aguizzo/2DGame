@@ -19,10 +19,13 @@ enum PlayerAnims
 
 void Player::init(const glm::ivec2 &tileMapPos, bool inv, ShaderProgram &shaderProgram)
 {
+	audio = false;
 	inverted = inv;
+	timer = 0;
 	bJumping = false;
 	jumpHeight = 0;
 	god = false;
+	death = false;
 	cl = false, cr = false, cu = false;
 	if(inv) spritesheet.loadFromFile("images/megamaninv.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	else spritesheet.loadFromFile("images/megaman.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -81,155 +84,153 @@ void Player::init(const glm::ivec2 &tileMapPos, bool inv, ShaderProgram &shaderP
 
 void Player::update(int deltaTime)
 {
-	if (!fstjump && !Game::instance().getSpecialKey(GLUT_KEY_UP)) {
-		fstjump = true;
-	}
-	sprite->update(deltaTime);
-	if(Game::instance().getSpecialKey(GLUT_KEY_LEFT))
+	if (!death)
 	{
-		cr = false;
-		if ((sprite->animation() == JUMP_LEFT) || (sprite->animation() == JUMP_RIGHT))
-			sprite->changeAnimation(JUMP_LEFT);
-		else if(sprite->animation() != MOVE_LEFT)
-			sprite->changeAnimation(MOVE_LEFT);
-		posPlayer.x -= 6;
-		if (cl)
-		{
-			if (map->collisionMoveLeft(posPlayer - glm::ivec2(58, 0), glm::ivec2(72, 72)))
-			{
-				posPlayer.x += 6;
-				sprite->changeAnimation(STAND_LEFT);
-			}
-			else posPlayer.x += 3;
+		if (!fstjump && !Game::instance().getSpecialKey(GLUT_KEY_UP)) {
+			fstjump = true;
 		}
-		else 
+		sprite->update(deltaTime);
+		if (Game::instance().getSpecialKey(GLUT_KEY_LEFT))
 		{
-			if (map->collisionMoveLeft(posPlayer + glm::ivec2(14, 0), glm::ivec2(72, 72)))
+			cr = false;
+			if ((sprite->animation() == JUMP_LEFT) || (sprite->animation() == JUMP_RIGHT))
+				sprite->changeAnimation(JUMP_LEFT);
+			else if (sprite->animation() != MOVE_LEFT)
+				sprite->changeAnimation(MOVE_LEFT);
+			posPlayer.x -= 6;
+			if (cl)
 			{
-				posPlayer.x += 6;
-				sprite->changeAnimation(STAND_LEFT);
+				if (map->collisionMoveLeft(posPlayer - glm::ivec2(58, 0), glm::ivec2(72, 72)))
+				{
+					posPlayer.x += 6;
+					sprite->changeAnimation(STAND_LEFT);
+				}
+				else posPlayer.x += 3;
+			}
+			else
+			{
+				if (map->collisionMoveLeft(posPlayer + glm::ivec2(14, 0), glm::ivec2(72, 72)))
+				{
+					posPlayer.x += 6;
+					sprite->changeAnimation(STAND_LEFT);
+				}
 			}
 		}
-	}
-	else if(Game::instance().getSpecialKey(GLUT_KEY_RIGHT))
-	{
-		cl = false;
-		if ((sprite->animation() == JUMP_RIGHT) || (sprite->animation() == JUMP_LEFT))
-			sprite->changeAnimation(JUMP_RIGHT);
-		else if(sprite->animation() != MOVE_RIGHT)
-			sprite->changeAnimation(MOVE_RIGHT);
-		posPlayer.x += 6;
-		if (cr)
+		else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT))
 		{
-			if (map->collisionMoveRight(posPlayer + glm::ivec2(58, 0), glm::ivec2(72, 72)))
+			cl = false;
+			if ((sprite->animation() == JUMP_RIGHT) || (sprite->animation() == JUMP_LEFT))
+				sprite->changeAnimation(JUMP_RIGHT);
+			else if (sprite->animation() != MOVE_RIGHT)
+				sprite->changeAnimation(MOVE_RIGHT);
+			posPlayer.x += 6;
+			if (cr)
 			{
-				posPlayer.x -= 6;
-				sprite->changeAnimation(STAND_RIGHT);
+				if (map->collisionMoveRight(posPlayer + glm::ivec2(58, 0), glm::ivec2(72, 72)))
+				{
+					posPlayer.x -= 6;
+					sprite->changeAnimation(STAND_RIGHT);
+				}
+				else posPlayer.x -= 3;
 			}
-			else posPlayer.x -= 3;
+			else
+			{
+				if (map->collisionMoveRight(posPlayer - glm::ivec2(14, 0), glm::ivec2(72, 72)))
+				{
+					posPlayer.x -= 6;
+					sprite->changeAnimation(STAND_RIGHT);
+				}
+			}
 		}
 		else
 		{
-			if (map->collisionMoveRight(posPlayer - glm::ivec2(14, 0), glm::ivec2(72, 72)))
-			{
-				posPlayer.x -= 6;
+			if (sprite->animation() == MOVE_LEFT)
+				sprite->changeAnimation(STAND_LEFT);
+			else if (sprite->animation() == MOVE_RIGHT)
 				sprite->changeAnimation(STAND_RIGHT);
-			}
 		}
-	}
-	else
-	{
-		if(sprite->animation() == MOVE_LEFT)
-			sprite->changeAnimation(STAND_LEFT);
-		else if(sprite->animation() == MOVE_RIGHT)
-			sprite->changeAnimation(STAND_RIGHT);
-	}
-	
-	if(bJumping)
-	{
-		if (inverted) {
-			if ((sprite->animation() == MOVE_LEFT) || (sprite->animation() == STAND_LEFT))
-				sprite->changeAnimation(JUMP_LEFT);
-			else if ((sprite->animation() == MOVE_RIGHT) || (sprite->animation() == STAND_RIGHT))
-				sprite->changeAnimation(JUMP_RIGHT);
-			jumpAngle += JUMP_ANGLE_STEP;
-			int colup = map->collisionMoveUpInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-			if (jumpAngle < 90 && colup == 1) {
-				jumpAngle = 180 - jumpAngle;
-			}
-			else if (colup == 2 && !god)
-			{
-				Game::instance().stopSound();
-				Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
-			}
-			else if (jumpAngle == 180)
-			{
 
-				bJumping = false;
-				posPlayer.y = startY;
-			}
-			else
-			{
-				posPlayer.y = int(startY + MAX_JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
-				if (jumpAngle > 90) {
-					int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-					if (coldown == 2 && !god)
-					{
-						Game::instance().stopSound();
-						Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
-					}
-					else bJumping = coldown == 0;
-				}
-			}
-		}
-		else {
-			if ((sprite->animation() == MOVE_LEFT) || (sprite->animation() == STAND_LEFT))
-				sprite->changeAnimation(JUMP_LEFT);
-			else if ((sprite->animation() == MOVE_RIGHT) || (sprite->animation() == STAND_RIGHT))
-				sprite->changeAnimation(JUMP_RIGHT);
-			jumpAngle += JUMP_ANGLE_STEP;
-			int colup = map->collisionMoveUp(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-			if (jumpAngle < 90 && colup == 1) {
-				jumpAngle = 180 - jumpAngle;
-
-			}
-			else if (colup == 2 && !god)
-			{
-				Game::instance().stopSound();
-				Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
-			}
-			else if (jumpAngle == 180)
-			{
-
-				bJumping = false;
-				posPlayer.y = startY;
-				
-			}
-			else
-			{
-				posPlayer.y = int(startY - MAX_JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
-				if (jumpAngle > 90) {
-					int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-					if (coldown == 2 && !god) 
-					{
-						Game::instance().stopSound();
-						Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
-					}
-						
-					else bJumping = coldown == 0;					
-				}
-			}
-		}
-		if (!Game::instance().getSpecialKey(GLUT_KEY_UP) && jumpAngle > 30) 
-			bJumping = false;
-		if (jumpAngle < 5)
-			Game::instance().playSoundEffect("sounds/06_MegamanLand.wav");
-	}
-	else
-	{
-		//if (!cu) {
+		if (bJumping)
+		{
 			if (inverted) {
-				if(!cu)posPlayer.y -= FALL_STEP;
+				if ((sprite->animation() == MOVE_LEFT) || (sprite->animation() == STAND_LEFT))
+					sprite->changeAnimation(JUMP_LEFT);
+				else if ((sprite->animation() == MOVE_RIGHT) || (sprite->animation() == STAND_RIGHT))
+					sprite->changeAnimation(JUMP_RIGHT);
+				jumpAngle += JUMP_ANGLE_STEP;
+				int colup = map->collisionMoveUpInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+				if (jumpAngle < 90 && colup == 1) {
+					jumpAngle = 180 - jumpAngle;
+				}
+				else if (colup == 2 && !god)
+				{
+					death = true;
+				}
+				else if (jumpAngle == 180)
+				{
+
+					bJumping = false;
+					posPlayer.y = startY;
+				}
+				else
+				{
+					posPlayer.y = int(startY + MAX_JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
+					if (jumpAngle > 90) {
+						int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+						if (coldown == 2 && !god)
+						{
+							death = true;
+						}
+						else bJumping = coldown == 0;
+					}
+				}
+			}
+			else {
+				if ((sprite->animation() == MOVE_LEFT) || (sprite->animation() == STAND_LEFT))
+					sprite->changeAnimation(JUMP_LEFT);
+				else if ((sprite->animation() == MOVE_RIGHT) || (sprite->animation() == STAND_RIGHT))
+					sprite->changeAnimation(JUMP_RIGHT);
+				jumpAngle += JUMP_ANGLE_STEP;
+				int colup = map->collisionMoveUp(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+				if (jumpAngle < 90 && colup == 1) {
+					jumpAngle = 180 - jumpAngle;
+
+				}
+				else if (colup == 2 && !god)
+				{
+					death = true;
+				}
+				else if (jumpAngle == 180)
+				{
+
+					bJumping = false;
+					posPlayer.y = startY;
+
+				}
+				else
+				{
+					posPlayer.y = int(startY - MAX_JUMP_HEIGHT * sin(3.14159f * jumpAngle / 180.f));
+					if (jumpAngle > 90) {
+						int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+						if (coldown == 2 && !god)
+						{
+							death = true;
+						}
+
+						else bJumping = coldown == 0;
+					}
+				}
+			}
+			if (!Game::instance().getSpecialKey(GLUT_KEY_UP) && jumpAngle > 30)
+				bJumping = false;
+			if (jumpAngle < 5)
+				Game::instance().playSoundEffect("sounds/06_MegamanLand.wav");
+		}
+		else
+		{
+			//if (!cu) {
+			if (inverted) {
+				if (!cu)posPlayer.y -= FALL_STEP;
 				int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
 				if (coldown == 1 || cu)
 				{
@@ -247,8 +248,7 @@ void Player::update(int deltaTime)
 					}
 				}
 				else if (coldown == 2 && !god) {
-					Game::instance().stopSound();
-					Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
+					death = true;
 				}
 				else {
 					if (sprite->animation() == STAND_LEFT)
@@ -258,7 +258,7 @@ void Player::update(int deltaTime)
 				}
 			}
 			else {
-				if(!cu)posPlayer.y += FALL_STEP;
+				if (!cu)posPlayer.y += FALL_STEP;
 				int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
 				if (coldown == 1 || cu)
 				{
@@ -277,8 +277,7 @@ void Player::update(int deltaTime)
 				}
 				else if (coldown == 2 && !god)
 				{
-					Game::instance().stopSound();
-					Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
+					death = true;
 				}
 				else {
 					if (sprite->animation() == STAND_LEFT)
@@ -287,9 +286,25 @@ void Player::update(int deltaTime)
 						sprite->changeAnimation(JUMP_RIGHT);
 				}
 			}
-		//}
+			//}
+		}
+		sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 	}
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+	else {
+		//sprite->update(deltaTime);
+		timer++;
+		if (!audio) {
+			Game::instance().stopSound();
+			Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
+			audio = true;
+		}
+		if (timer >= 120) 
+		{
+			Game::instance().resetLvl();
+			timer = 0;
+			audio = false;
+		}
+	}
 }
 
 void Player::render()

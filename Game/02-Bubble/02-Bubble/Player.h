@@ -34,7 +34,8 @@ private:
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
-	bool god;
+	bool god, death, audio;
+	int timer;
 
 };
 

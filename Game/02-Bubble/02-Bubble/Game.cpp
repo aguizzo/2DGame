@@ -92,12 +92,16 @@ void Game::changeState(char c)
 		case 'S':
 		{
 			State = SCENE;
-			scene.reset();
+			resetLvl();
 			engine->stopAllSounds();
 			engine->play2D("sounds/06_Guts_Man.mp3", true);
 			break;
 		}
 	}
+}
+
+void Game::resetLvl() {
+	scene.reset();
 }
 
 void Game::keyPressed(int key)
