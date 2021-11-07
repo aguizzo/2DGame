@@ -20,9 +20,9 @@ void Box::init(const glm::ivec2& tileMapPos, bool inv, ShaderProgram& shaderProg
 	if (inv) spritesheet.loadFromFile("images/boxinv.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	else spritesheet.loadFromFile("images/box.png", TEXTURE_PIXEL_FORMAT_RGBA);
 	sprite = Sprite::createSprite(glm::ivec2(72, 72), glm::vec2(1.f, 1.f), &spritesheet, &shaderProgram);
-
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posBox.x), float(tileMapDispl.y + posBox.y)));
+	inverted = inv;
 
 }
 

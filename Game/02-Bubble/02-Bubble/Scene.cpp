@@ -109,7 +109,14 @@ void Scene::initLvl(int lvl) {
 		}
 		case 4:
 		{
-	
+			map = TileMap::createTileMap("levels/lvl04.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+			setPlayerSprites(18, 9);
+			setPlayer2Sprites(18, 20);
+			setFlagSprites(10, 10);
+			setFlag2Sprites(44, 21);
+			setLeverSprites(6, 11);
+			setBoxSprites(21, 20);
+			break;
 		}
 		case 5:
 		{
@@ -120,7 +127,6 @@ void Scene::initLvl(int lvl) {
 			setFlag2Sprites(23, 17);
 			setLeverSprites(28, 11);
 			setBoxSprites(0, 0);
-			break;
 			break;
 		}
 	}
@@ -220,6 +226,16 @@ void Scene::update(int deltaTime)
 							lvl = 3;
 							reset();
 						}
+						if (Game::instance().getKey('4'))
+						{
+							lvl = 4;
+							reset();
+						}
+						if (Game::instance().getKey('5'))
+						{
+							lvl = 5;
+							reset();
+						}
 						if (Game::instance().getKey('r'))
 						{
 							Game::instance().keyReleased('r');
@@ -242,8 +258,8 @@ void Scene::update(int deltaTime)
 		{
 			currentTime += deltaTime;
 			count++;
-			player->update(deltaTime);
-			player2->update(deltaTime);
+			//player->update(deltaTime);
+			//player2->update(deltaTime);
 			if (!audio) 
 			{
 				Game::instance().playSoundEffect("sounds/10_Victory!.mp3");
@@ -265,7 +281,9 @@ void Scene::update(int deltaTime)
 			break;
 		}
 	}
-	if (Game::instance().getKey('q')) {
+	if (Game::instance().getKey('q')) 
+	{
+		lvl = 1;
 		Game::instance().changeState('M');
 	}
 	projection = glm::ortho(float(camera - SCREEN_WIDTH / PROPORTION - scroll), float(camera + SCREEN_WIDTH / PROPORTION + scroll), float(WORLD_HEIGHT / 2 + SCREEN_HEIGHT / PROPORTION + scroll / PROPORTION), float(WORLD_HEIGHT / 2 - SCREEN_HEIGHT / PROPORTION - scroll / PROPORTION));
@@ -374,8 +392,7 @@ void Scene::setLeverSprites(int x, int y)
 void Scene::setBoxSprites(int x, int y)
 {
 	box = new Box();
-	box->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
-	//box->setPosition(glm::vec2(22 * map->getTileSize(), 7 * map->getTileSize()));
+	box->init(glm::ivec2(SCREEN_X, SCREEN_Y), true, texProgram);
 	box->setPosition(glm::vec2(x * map->getTileSize(), y * map->getTileSize()));
 	box->setTileMap(map);
 }

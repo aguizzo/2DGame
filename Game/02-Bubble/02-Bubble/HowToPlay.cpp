@@ -29,11 +29,7 @@ void HowToPlay::init()
 	currentTime = 0.0f;
 
 	int option = 0;
-
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(1800.f, 1000.f) };
-	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
-	background = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
-	bgImage.loadFromFile("images/mega_bg.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	initImages();
 	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
 	if (!text.init("fonts/MMRock9.ttf"))
 		cout << "Could not load font!!!" << endl;
@@ -57,7 +53,12 @@ void HowToPlay::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	background->render(bgImage);
-	text.render("How to Play ", glm::vec2(570, 380), 30, glm::vec4(1, 1, 1, 1));
+	arrows->render(arrowsImg);
+	up->render(upImg);
+	text.render("How to Play ", glm::vec2(320, 80), 30, glm::vec4(1, 1, 1, 1));
+	text.render("Move right or left", glm::vec2(400, 200), 14, glm::vec4(1, 1, 1, 1));
+	text.render("Jump", glm::vec2(400, 260), 14, glm::vec4(1, 1, 1, 1));
+	text.render("Press b to go back", glm::vec2(340, 400), 14, glm::vec4(1, 1, 1, 1));
 }
 
 
@@ -89,4 +90,22 @@ void HowToPlay::initShaders()
 	texProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
+}
+
+void HowToPlay::initImages()
+{
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(960.f, 540.f) };
+	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+	background = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
+	bgImage.loadFromFile("images/mega_bg.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	glm::vec2 geom2[2] = { glm::vec2(300.f, 175.f), glm::vec2(80.f + 300.f, 40.f + 175.f) };
+	glm::vec2 texCoords2[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+	arrows = TexturedQuad::createTexturedQuad(geom2, texCoords2, texProgram);
+	arrowsImg.loadFromFile("images/leftright.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	glm::vec2 geom3[2] = { glm::vec2(325.f, 240.f), glm::vec2(40.f + 325.f, 40.f + 240.f) };
+	glm::vec2 texCoords3[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+	up = TexturedQuad::createTexturedQuad(geom3, texCoords3, texProgram);
+	upImg.loadFromFile("images/up.png", TEXTURE_PIXEL_FORMAT_RGBA);
 }

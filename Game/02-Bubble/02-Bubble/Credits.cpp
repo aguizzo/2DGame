@@ -30,7 +30,7 @@ void Credits::init()
 
 	int option = 0;
 
-	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(1800.f, 1000.f) };
+	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(960.f, 540.f) };
 	glm::vec2 texCoords[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 	background = TexturedQuad::createTexturedQuad(geom, texCoords, texProgram);
 	bgImage.loadFromFile("images/mega_bg.png", TEXTURE_PIXEL_FORMAT_RGBA);
