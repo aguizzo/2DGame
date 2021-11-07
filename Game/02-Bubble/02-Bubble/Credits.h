@@ -15,13 +15,14 @@ public:
 
 private:
 	void initShaders();
+	void initImages();
 
 private:
 	ShaderProgram texProgram;
 	float currentTime;
-	TexturedQuad* background;
+	TexturedQuad* background, *logo, *logo2;
 	glm::mat4 projection;
-	Texture bgImage;
+	Texture bgImage, logoImg, logoImg2;
 	Text text;
 };
 
