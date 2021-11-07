@@ -33,8 +33,8 @@ private:
 	bool cl, cr, cu;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, jumpHeight, startY;
-	Texture spritesheet, explosionsheet;
-	Sprite *sprite, *deathSprite;
+	Texture spritesheet;
+	Sprite *sprite;
 	TileMap *map;
 	bool god, death, audio;
 	int timer;

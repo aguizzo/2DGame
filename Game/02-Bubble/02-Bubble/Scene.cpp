@@ -88,7 +88,7 @@ void Scene::initLvl(int lvl) {
 		{
 			map = TileMap::createTileMap("levels/lvl01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 			setPlayerSprites(5, 8);
-			setPlayer2Sprites(5, 20);
+			setPlayer2Sprites(5, 18);
 			setFlagSprites(26, 11);
 			setFlag2Sprites(37, 16);
 			lever = NULL;

@@ -27,75 +27,63 @@ void Player::init(const glm::ivec2 &tileMapPos, bool inv, ShaderProgram &shaderP
 	god = false;
 	death = false;
 	cl = false, cr = false, cu = false;
-	if(inv) spritesheet.loadFromFile("images/megamaninv.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	else spritesheet.loadFromFile("images/megaman.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(72, 72), glm::vec2(1/8.f, 0.5f), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(6);
-	
-		sprite->setAnimationSpeed(STAND_LEFT, 8);
-		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.5f));
-		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.5f));
-		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.5f));
-		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.5f));
-		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.5f));
-		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.5f));
-		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.5f));
-		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 0.5f));
-		sprite->addKeyframe(STAND_LEFT, glm::vec2(0.125f, 0.5f));
+	if (inv) spritesheet.loadFromFile("images/megamanSpritesInv.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	else spritesheet.loadFromFile("images/megamanSprites.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(72, 72), glm::vec2(1 / 8.f, 1/3.f), &spritesheet, &shaderProgram);
+	sprite->setNumberAnimations(7);
 
-		
-		sprite->setAnimationSpeed(STAND_RIGHT, 8);
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
-		sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.125f, 0.f));
-		
-		sprite->setAnimationSpeed(MOVE_LEFT, 8);
-		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.125*3.f, 0.5f));
-		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.125*4.f, 0.5f));
-		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.125*5.f, 0.5f));
-		sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.125*4.f, 0.5f));
-		
-		sprite->setAnimationSpeed(MOVE_RIGHT, 8);
-		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.125*3.f, 0.f));
-		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.5, 0.f));
-		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.625, 0.f));
-		sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.5, 0.f));
+	sprite->setAnimationSpeed(STAND_LEFT, 8);
+	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 1/3.f));
+	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 1 / 3.f));
+	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 1 / 3.f));
+	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 1 / 3.f));
+	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 1 / 3.f));
+	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 1 / 3.f));
+	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 1 / 3.f));
+	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.f, 1 / 3.f));
+	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.125f, 1 / 3.f));
 
-		sprite->setAnimationSpeed(JUMP_RIGHT, 8);
-		sprite->addKeyframe(JUMP_RIGHT, glm::vec2(0.125*6.f, 0.f));
 
-		sprite->setAnimationSpeed(JUMP_LEFT, 8);
-		sprite->addKeyframe(JUMP_LEFT, glm::vec2(0.125*6.f, 0.5f));
+	sprite->setAnimationSpeed(STAND_RIGHT, 8);
+	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
+	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.125f, 0.f));
+
+	sprite->setAnimationSpeed(MOVE_LEFT, 8);
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.125 * 3.f, 1 / 3.f));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.125 * 4.f, 1 / 3.f));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.125 * 5.f, 1 / 3.f));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.125 * 4.f, 1 / 3.f));
+
+	sprite->setAnimationSpeed(MOVE_RIGHT, 8);
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.125 * 3.f, 0.f));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.5, 0.f));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.625, 0.f));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.5, 0.f));
+
+	sprite->setAnimationSpeed(JUMP_RIGHT, 8);
+	sprite->addKeyframe(JUMP_RIGHT, glm::vec2(0.125 * 6.f, 0.f));
+
+	sprite->setAnimationSpeed(JUMP_LEFT, 8);
+	sprite->addKeyframe(JUMP_LEFT, glm::vec2(0.125 * 6.f, 1 / 3.f));
+
+	sprite->setAnimationSpeed(EXPLOSION, 4);
+	sprite->addKeyframe(EXPLOSION, glm::vec2(0.f, 2/3.f));
+	sprite->addKeyframe(EXPLOSION, glm::vec2(0.125f, 2 / 3.f));
+	sprite->addKeyframe(EXPLOSION, glm::vec2(0.250f, 2 / 3.f));
+	sprite->addKeyframe(EXPLOSION, glm::vec2(0.375f, 2 / 3.f));
+	sprite->addKeyframe(EXPLOSION, glm::vec2(0.5f, 2 / 3.f));
+	sprite->addKeyframe(EXPLOSION, glm::vec2(0.625f, 2 / 3.f));
 
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-
-	explosionsheet.loadFromFile("images/explosioMega.png", TEXTURE_PIXEL_FORMAT_RGBA);
-
-	deathSprite = Sprite::createSprite(glm::ivec2(72, 72), glm::vec2(0.2f, 1.f), &explosionsheet, &shaderProgram);
-	deathSprite->setNumberAnimations(1);
-		deathSprite->setAnimationSpeed(EXPLOSION, 8);
-		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.f, 0.f));
-		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.2f, 0.f));
-		deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.4f, 1.0f));
-		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.6f, 0.f));
-		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.8f, 0.f));
-	//deathSprite->setAnimationSpeed(EXPLOSION2, 8);
-		//deathSprite->addKeyframe(EXPLOSION2, glm::vec2(0.8f, 0.f));
-		//deathSprite->addKeyframe(EXPLOSION2, glm::vec2(0.6f, 0.f));
-		//deathSprite->addKeyframe(EXPLOSION2, glm::vec2(0.4f, 0.f));
-		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.2f, 0.f));
-		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.f, 0.f));
-
-		//deathSprite->changeAnimation(EXPLOSION2);
-		deathSprite->changeAnimation(EXPLOSION);
 }		
 
 
@@ -306,13 +294,12 @@ void Player::update(int deltaTime)
 			//}
 		}
 		sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-		deathSprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 	}
 	else {
-		deathSprite->update(deltaTime);
+		sprite->update(deltaTime);
 		timer++;
 		if (!audio) {
-			deathSprite->changeAnimation(EXPLOSION);
+			sprite->changeAnimation(EXPLOSION);
 			Game::instance().stopSound();
 			Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
 			audio = true;
@@ -329,10 +316,7 @@ void Player::update(int deltaTime)
 
 void Player::render()
 {
-	if (!death)
 		sprite->render();
-	else
-		deathSprite->render();
 }
 
 void Player::setTileMap(TileMap *tileMap)
