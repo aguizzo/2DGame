@@ -11,6 +11,7 @@
 #include "box.h"
 #include "portal.h"
 #include "TexturedQuad.h"
+#include "PressurePlate.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -43,11 +44,12 @@ private:
 	Box* box;
 	Portal* portal;
 	Portal* portal2;
+	PressurePlate* pplate;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
 	int SceneState, camera, scroll;
-	bool leverActivated, touchingPortal;
+	bool leverActivated, touchingPortal, pplateActivated;
 	TexturedQuad* background;
 	Texture bgImage;
 };

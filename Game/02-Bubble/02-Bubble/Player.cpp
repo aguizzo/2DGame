@@ -170,7 +170,7 @@ void Player::update(int deltaTime)
 				if (jumpAngle > 90) {
 					int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
 					if (coldown == 2) Game::instance().init();
-					else bJumping = coldown == 0;
+					else bJumping = (coldown == 0 && cu);
 				}
 			}
 		}
@@ -198,68 +198,67 @@ void Player::update(int deltaTime)
 				if (jumpAngle > 90) {
 					int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
 					if (coldown == 2) Game::instance().init();
-					else bJumping = coldown == 0;
+					else bJumping = (coldown == 0 && cu);
 				}
 			}
 		}
-		if (!Game::instance().getSpecialKey(GLUT_KEY_UP) && jumpAngle > 30) bJumping = false;
+		if (!Game::instance().getSpecialKey(GLUT_KEY_UP) && jumpAngle > 30) 
+			bJumping = false;
 	}
 	else
 	{
-		//if (!cu) {
-			if (inverted) {
-				if(!cu)posPlayer.y -= FALL_STEP;
-				int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-				if (coldown == 1 || cu)
+		if (inverted) {
+			if(!cu)posPlayer.y -= FALL_STEP;
+			int coldown = map->collisionMoveDownInv(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+			if (coldown == 1 || cu)
+			{
+				if (sprite->animation() == JUMP_LEFT)
+					sprite->changeAnimation(STAND_LEFT);
+				else if (sprite->animation() == JUMP_RIGHT)
+					sprite->changeAnimation(STAND_RIGHT);
+				jumpHeight = 0;
+				if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
 				{
-					if (sprite->animation() == JUMP_LEFT)
-						sprite->changeAnimation(STAND_LEFT);
-					else if (sprite->animation() == JUMP_RIGHT)
-						sprite->changeAnimation(STAND_RIGHT);
-					jumpHeight = 0;
-					if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
-					{
-						bJumping = true;
-						fstjump = false;
-						jumpAngle = 0;
-						startY = posPlayer.y;
-					}
-				}
-				else if (coldown == 2) Game::instance().init();
-				else {
-					if (sprite->animation() == STAND_LEFT)
-						sprite->changeAnimation(JUMP_LEFT);
-					else if (sprite->animation() == STAND_RIGHT)
-						sprite->changeAnimation(JUMP_RIGHT);
+					bJumping = true;
+					fstjump = false;
+					jumpAngle = 0;
+					startY = posPlayer.y;
 				}
 			}
+			else if (coldown == 2) Game::instance().init();
 			else {
-				if(!cu)posPlayer.y += FALL_STEP;
-				int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
-				if (coldown == 1 || cu)
+				if (sprite->animation() == STAND_LEFT)
+					sprite->changeAnimation(JUMP_LEFT);
+				else if (sprite->animation() == STAND_RIGHT)
+					sprite->changeAnimation(JUMP_RIGHT);
+			}
+		}
+		else {
+			if(!cu)posPlayer.y += FALL_STEP;
+			int coldown = map->collisionMoveDown(posPlayer, glm::ivec2(72, 72), &posPlayer.y);
+			if (coldown == 1 || cu)
+			{
+				if (sprite->animation() == JUMP_LEFT)
+					sprite->changeAnimation(STAND_LEFT);
+				else if (sprite->animation() == JUMP_RIGHT)
+					sprite->changeAnimation(STAND_RIGHT);
+				jumpHeight = 0;
+				if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
 				{
-					if (sprite->animation() == JUMP_LEFT)
-						sprite->changeAnimation(STAND_LEFT);
-					else if (sprite->animation() == JUMP_RIGHT)
-						sprite->changeAnimation(STAND_RIGHT);
-					jumpHeight = 0;
-					if (Game::instance().getSpecialKey(GLUT_KEY_UP) && fstjump)
-					{
-						bJumping = true;
-						fstjump = false;
-						jumpAngle = 0;
-						startY = posPlayer.y;
-					}
-				}
-				else if (coldown == 2) Game::instance().init();
-				else {
-					if (sprite->animation() == STAND_LEFT)
-						sprite->changeAnimation(JUMP_LEFT);
-					else if (sprite->animation() == STAND_RIGHT)
-						sprite->changeAnimation(JUMP_RIGHT);
+					bJumping = true;
+					fstjump = false;
+					jumpAngle = 0;
+					startY = posPlayer.y;
 				}
 			}
-		//}
+			else if (coldown == 2) Game::instance().init();
+			else {
+				if (sprite->animation() == STAND_LEFT)
+					sprite->changeAnimation(JUMP_LEFT);
+				else if (sprite->animation() == STAND_RIGHT)
+					sprite->changeAnimation(JUMP_RIGHT);
+			}
+		}
 	}
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
@@ -305,3 +304,4 @@ void Player::setContact(string s)
 	}
 }
 
+void Player::setJump(bool jmp) { bJumping = jmp; }

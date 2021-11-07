@@ -34,6 +34,7 @@ Scene::Scene()
 	flag2 = NULL;
 	lever = NULL;
 	box = NULL;
+	pplate = NULL;
 	portal = NULL;
 	portal2 = NULL;
 }
@@ -52,6 +53,8 @@ Scene::~Scene()
 		delete lever;
 	if (box != NULL)
 		delete box;
+	if (pplate != NULL)
+		delete pplate;
 	if (portal != NULL)
 		delete portal;
 	if (portal2 != NULL)
@@ -62,6 +65,9 @@ Scene::~Scene()
 void Scene::init()
 {
 	initShaders();
+	leverActivated = false;
+	touchingPortal = false;
+	pplateActivated = false;
 	SceneState = PLAYING;
 	map = TileMap::createTileMap("levels/lvl1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	glm::vec2 geom[2] = { glm::vec2(0.f, 0.f), glm::vec2(1800.f, 1000.f) };
@@ -73,8 +79,6 @@ void Scene::init()
 	scroll = 0;
 	projection = glm::ortho(float(camera - SCREEN_WIDTH/PROPORTION - scroll), float(camera + SCREEN_WIDTH/PROPORTION + scroll), float(WORLD_HEIGHT/2 + SCREEN_HEIGHT/PROPORTION + scroll*PROPORTION), float(WORLD_HEIGHT/2 - SCREEN_HEIGHT/PROPORTION - scroll*PROPORTION));
 	currentTime = 0.0f;
-	leverActivated = false;
-	touchingPortal = false;
 }
 
 void Scene::update(int deltaTime)
@@ -90,7 +94,7 @@ void Scene::update(int deltaTime)
 		glm::vec2 currPos1 = player->getPosition();
 		glm::vec2 currPos2 = player2->getPosition();
 		camera = (currPos1.x + currPos2.x)/2;
-		if ((currPos1.y > WORLD_HEIGHT / 2) || (currPos2.y < WORLD_HEIGHT / 2)) init();
+		if (((currPos1.y + 32 > WORLD_HEIGHT / 2 - 3)  && (currPos1.y + 32 < WORLD_HEIGHT / 2 + 3)) || ((currPos2.y + 32 > WORLD_HEIGHT / 2 - 3) && (currPos2.y + 32 < WORLD_HEIGHT / 2 + 3))) init();
 		bool win1 = false;
 		if (abs(currPos1.x - currPos2.x) > SCREEN_WIDTH / 1.2)
 			scroll = abs(abs(currPos1.x - currPos2.x) - SCREEN_WIDTH / 1.2) / 2;
@@ -118,7 +122,7 @@ void Scene::update(int deltaTime)
 		collisions();
 		box->update(deltaTime);
 		int bpos = box->getPosition().y;
-		if ((bpos >= (WORLD_HEIGHT / 2) - 42) && (bpos <= (WORLD_HEIGHT / 2) + 42)) box->setMid();
+		if ((bpos >= (WORLD_HEIGHT / 2) - 36) && (bpos + 72 <= (WORLD_HEIGHT / 2) + 36)) box->setMid();
 		break;
 	}
 	projection = glm::ortho(float(camera - SCREEN_WIDTH / PROPORTION - scroll), float(camera + SCREEN_WIDTH / PROPORTION + scroll), float(WORLD_HEIGHT / 2 + SCREEN_HEIGHT / PROPORTION + scroll / PROPORTION), float(WORLD_HEIGHT / 2 - SCREEN_HEIGHT / PROPORTION - scroll / PROPORTION));
@@ -141,8 +145,9 @@ void Scene::render()
 	flag2->render();
 	lever->render();
 	box->render();
-	portal->render();
+	if (pplateActivated) portal->render();
 	portal2->render();
+	pplate->render();
 }
 
 void Scene::initShaders()
@@ -202,6 +207,11 @@ void Scene::setSprites() {
 	lever->setPosition(glm::vec2(28 * map->getTileSize(), 11 * map->getTileSize()));
 	lever->setTileMap(map);
 
+	pplate = new PressurePlate();
+	pplate->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
+	pplate->setPosition(glm::vec2(25 * map->getTileSize(), 11 * map->getTileSize()));
+	pplate->setTileMap(map);
+
 	box = new Box();
 	box->init(glm::ivec2(SCREEN_X, SCREEN_Y), false, texProgram);
 	box->setPosition(glm::vec2(22 * map->getTileSize(), 7 * map->getTileSize()));
@@ -209,7 +219,7 @@ void Scene::setSprites() {
 
 	portal = new Portal();
 	portal->init(glm::ivec2(SCREEN_X, SCREEN_Y), 1, 1, texProgram);
-	portal->setPosition(glm::vec2(31 * map->getTileSize(), 10 * map->getTileSize()));
+	portal->setPosition(glm::vec2(33 * map->getTileSize(), 19 * map->getTileSize()));
 	portal->setTileMap(map);
 
 	portal2 = new Portal();
@@ -234,13 +244,25 @@ void Scene::collisions() {
 	glm::ivec2 boxp = box->getPosition();
 	glm::ivec2 portalp = portal->getPosition();
 	glm::ivec2 portal2p = portal2->getPosition();
+	glm::ivec2 leverp = lever->getPosition();
+	glm::ivec2 pplatep = pplate->getPosition();
 
-	if (!leverActivated && (abs(playerp.x + 15 - lever->getPosition().x) <= 36) && (abs(playerp.y + 36 - lever->getPosition().y) <= 36))
+	if (!leverActivated && (abs(playerp.x + 15 - leverp.x) <= 36) && (abs(playerp.y + 36 - leverp.y) <= 36))
 	{
 		lever->activate();
 		leverActivated = true;
 		map = TileMap::createTileMap("levels/lvl1np.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 		setMap();
+	}
+
+	if (((abs(playerp.x - pplatep.x) <= 36) && (abs(playerp.y + 36 - pplatep.y) <= 36)) || ((abs(boxp.x - pplatep.x) <= 36) && (abs(boxp.y + 36 - pplatep.y) <= 36)))
+	{
+		pplate->setState(true);
+		pplateActivated = true;
+	}
+	else {
+		pplate->setState(false);
+		pplateActivated = false;
 	}
 
 	int cr = boxp.x - (playerp.x + 36) + 15;
@@ -249,96 +271,111 @@ void Scene::collisions() {
 	int cli = player2p.x + 15 - (boxp.x + 36);
 	int cu = boxp.y - (playerp.y + 72);
 	int cui = player2p.y - (boxp.y + 72);
+
 	if ((cr >= 0 && cr <= 36) && (abs(playerp.y + 35 - boxp.y) <= 36)) {
 		box->setContact(true);
 		player->setContact("right");
-	}
-	else if ((cri >= 0 && cri <= 36) && (abs(player2p.y + 35 - boxp.y) <= 36)) {
-		box->setContact(true);
-		player2->setContact("right");
 	}
 	else if ((cl >= 0 && cl <= 36) && (abs(playerp.y + 35 - boxp.y) <= 36))
 	{
 		box->setContact(true);
 		player->setContact("left");
 	}
-	else if ((cli >= 0 && cli <= 36) && (abs(player2p.y + 35 - boxp.y) <= 36))
+	else if ((cri >= 0 && cri <= 36) && (abs(player2p.y - 35 - boxp.y) <= 36)) {
+		box->setContact(true);
+		player2->setContact("right");
+	}
+	else if ((cli >= 0 && cli <= 36) && (abs(player2p.y - 35 - boxp.y) <= 36))
 	{
 		box->setContact(true);
 		player2->setContact("left");
-	}
-	else if ((cu <= 6 && cu >= 0) && (playerp.x + 72 - 15 >= boxp.x) && (playerp.x + 15 <= boxp.x + 72)) {
-		player->setPosition(glm::vec2(playerp.x, boxp.y-72));
-		player->setContact("up");
-	}
-	else if ((cui <= 6 && cui >= 0) && (player2p.x + 72 - 15 >= boxp.x) && (player2p.x + 15 <= boxp.x + 72)) {
-		player2->setPosition(glm::vec2(playerp.x, boxp.y-72));
-		player2->setContact("up");
 	}
 	else
 	{
 		box->setContact(false);
 		player->setContact("");
+		player2->setContact("");
 	}
 
-	if (portal->getSide()) {  //entrar al portal 1 por su izquierda
-		int distr1 = portalp.x + 36 - (playerp.x + 57);
-		int distr2 = portalp.x + 36 - (player2p.x + 57);
-		if (!touchingPortal && distr1 <= 6 && distr1 >= -6 && (playerp.y - 36 <= portalp.y) && (playerp.y + 32 >= portalp.y - 72)) {
-			touchingPortal = true;
-			if (portal2->getSide()) player->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
-			else player->setPosition(portal2p);
-		}
-		else if (!touchingPortal && distr2 <= 6 && distr2 >= -6 && (player2p.y - 36 <= portalp.y) && (player2p.y + 32 >= portalp.y - 72)) {
-			touchingPortal = true;
-			if (portal2->getSide()) player->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
-			else player->setPosition(portal2p);
-		}
-		else touchingPortal = false;
-	}
-	else {	//entrar al portal 1 por su derecha
-		int distl1 = playerp.x + 15 - portalp.x;
-		int distl2 = player2p.x + 15 - portalp.x;
-		if (!touchingPortal && distl1 <= 6 && distl1 >= -6 && (playerp.y - 36 <= portalp.y) && (playerp.y + 32 >= portalp.y - 72)) {
-			touchingPortal = true;
-			if (portal2->getSide()) player->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
-			else player->setPosition(portal2p);
-		}
-		else if (!touchingPortal && distl2 <= 6 && distl2 >= -6 && (player2p.y - 36 <= portalp.y) && (player2p.y + 32 >= portalp.y - 72)) {
-			touchingPortal = true;
-			if (portal2->getSide()) player->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
-			else player->setPosition(portal2p);
-		}
-		else touchingPortal = false;
+
+	if ((cu <= 6 && cu >= 0) && (playerp.x + 72 - 15 >= boxp.x) && (playerp.x + 15 <= boxp.x + 72)) {
+		player->setPosition(glm::vec2(playerp.x, boxp.y - 72));
+		player->setContact("up");
+		box->setContact(false);
 	}
 
+	if ((cui <= 6 && cui >= 0) && (player2p.x + 72 - 15 >= boxp.x) && (player2p.x + 15 <= boxp.x + 72)) {
+		player2->setPosition(glm::vec2(player2p.x, boxp.y + 72));
+		player2->setContact("up");
+		box->setContact(false);
+	}
+	if (pplateActivated) {
+		if (portal->getSide()) {  //entrar al portal 1 por su izquierda
+			int distr1 = portalp.x + 36 - (playerp.x + 57);
+			int distr2 = portalp.x + 36 - (player2p.x + 57);
+			if (!touchingPortal && distr1 <= 6 && distr1 >= -6 && (playerp.y + 36 >= portalp.y) && (playerp.y + 36 <= portalp.y + 72)) {
+				touchingPortal = true;
+				if (portal2->getSide()) player->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
+				else player->setPosition(portal2p);
+				player->setJump(false);
+			}
+			else if (!touchingPortal && distr2 <= 6 && distr2 >= -6 && (player2p.y + 36 >= portalp.y) && (player2p.y + 36 <= portalp.y + 72)) {
+				touchingPortal = true;
+				if (portal2->getSide()) player2->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
+				else player2->setPosition(portal2p);
+				player2->setJump(false);
+			}
+			else touchingPortal = false;
+		}
+		else {	//entrar al portal 1 por su derecha
+			int distl1 = playerp.x + 15 - portalp.x;
+			int distl2 = player2p.x + 15 - portalp.x;
+			if (!touchingPortal && distl1 <= 6 && distl1 >= -6 && (playerp.y + 36 >= portalp.y) && (playerp.y + 36 <= portalp.y + 72)) {
+				touchingPortal = true;
+				if (portal2->getSide()) player->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
+				else player->setPosition(portal2p);
+				player->setJump(false);
+			}
+			else if (!touchingPortal && distl2 <= 6 && distl2 >= -6 && (player2p.y + 36 >= portalp.y) && (player2p.y + 36 <= portalp.y + 72)) {
+				touchingPortal = true;
+				if (portal2->getSide()) player2->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
+				else player2->setPosition(portal2p);
+				player2->setJump(false);
+			}
+			else touchingPortal = false;
+		}
+	}
 	if (portal2->getSide()) {	//entrar al portal 2 por su izquierda
 		int distr1 = portal2p.x + 36 - (playerp.x + 57);
 		int distr2 = portal2p.x + 36 - (player2p.x + 57);
-		if (!touchingPortal && distr1 <= 6 && distr1 >= -6 && (playerp.y - 36 <= portal2p.y) && (playerp.y + 32 >= portal2p.y - 72)) {
+		if (!touchingPortal && distr1 <= 6 && distr1 >= -6 && (playerp.y + 36 >= portal2p.y) && (playerp.y + 36 <= portal2p.y + 72)) {
 			touchingPortal = true;
 			if (portal->getSide()) player->setPosition(glm::ivec2(portalp.x - 36, portalp.y));
 			else player->setPosition(portalp);
+			player->setJump(false);
 		}
-		else if (!touchingPortal && distr2 <= 6 && distr2 >= -6 && (player2p.y - 36 <= portal2p.y) && (player2p.y + 32 >= portal2p.y - 72)) {
+		else if (!touchingPortal && distr2 <= 6 && distr2 >= -6 && (player2p.y + 36 >= portal2p.y) && (player2p.y + 36 <= portal2p.y + 72)) {
 			touchingPortal = true;
-			if (portal->getSide()) player->setPosition(glm::ivec2(portalp.x - 36, portalp.y));
-			else player->setPosition(portalp);
+			if (portal->getSide()) player2->setPosition(glm::ivec2(portalp.x - 36, portalp.y));
+			else player2->setPosition(portalp);
+			player2->setJump(false);
 		}
 		else touchingPortal = false;
 	}
 	else {	//entrar al portal 2 por su derecha
 		int distl1 = playerp.x + 15 - portal2p.x;
 		int distl2 = player2p.x + 15 - portal2p.x;
-		if (!touchingPortal && distl1 <= 6 && distl1 >= -6 && (playerp.y - 36 <= portal2p.y) && (playerp.y + 32 >= portal2p.y - 72)) {
+		if (!touchingPortal && distl1 <= 6 && distl1 >= -6 && (playerp.y + 36 >= portal2p.y) && (playerp.y + 36 <= portal2p.y + 72)) {
 			touchingPortal = true;
 			if (portal->getSide()) player->setPosition(glm::ivec2(portalp.x - 36, portalp.y));
 			else player->setPosition(portalp);
+			player->setJump(false);
 		}
-		else if (!touchingPortal && distl2 <= 6 && distl2 >= -6 && (player2p.y - 36 <= portal2p.y) && (player2p.y + 32 >= portal2p.y - 72)) {
+		else if (!touchingPortal && distl2 <= 6 && distl2 >= -6 && (player2p.y + 36 >= portal2p.y) && (player2p.y + 36 <= portal2p.y + 72)) {
 			touchingPortal = true;
-			if (portal->getSide()) player->setPosition(glm::ivec2(portalp.x - 36, portalp.y));
-			else player->setPosition(portalp);
+			if (portal->getSide()) player2->setPosition(glm::ivec2(portalp.x - 36, portalp.y));
+			else player2->setPosition(portalp);
+			player2->setJump(false);
 		}
 		else touchingPortal = false;
 	}
