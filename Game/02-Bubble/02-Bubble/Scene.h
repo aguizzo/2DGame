@@ -9,7 +9,9 @@
 #include "Flag.h"
 #include "Lever.h"
 #include "box.h"
+#include "portal.h"
 #include "TexturedQuad.h"
+#include "PressurePlate.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -41,6 +43,9 @@ private:
 	void initLvl(int lvl);
 	void leverActivate();
 	void removeBarrier();
+	void setPressurePlateSprites();
+	void setPortalSprites();
+	void setPortalSprites2();
 	
 private:
 	TileMap *map;
@@ -50,13 +55,15 @@ private:
 	Flag* flag2;
 	Lever* lever;
 	Box* box;
+	Portal* portal;
+	Portal* portal2;
+	PressurePlate* pplate;
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
 	int flag_x, flag2_x, flag_y, flag2_y;
-	int SceneState, PlayerState;
-	int camera, scroll;
-	bool leverActivated;
+	int SceneState, PlayerState, camera, scroll;
+	bool leverActivated, touchingPortal, pplateActivated;
 	TexturedQuad* background;
 	Texture bgImage;
 	bool audio;

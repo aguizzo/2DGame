@@ -1,0 +1,70 @@
+﻿  Credits.cpp
+  box.cpp
+  Flag.cpp
+  Game.cpp
+  Lever.cpp
+  HowToPlay.cpp
+  main.cpp
+  Menu.cpp
+  Player.cpp
+  Quad.cpp
+  Scene.cpp
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\Scene.cpp(83,37): warning C4244: '=': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\Scene.cpp(87,68): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\Scene.cpp(111,12): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\Scene.cpp(218,9): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\Scene.cpp(219,9): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\Scene.cpp(220,10): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\Scene.cpp(221,10): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\Scene.cpp(222,9): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\02-Bubble\Scene.cpp(223,10): warning C4244: 'inicializando': conversión de 'T' a 'int'; posible pérdida de datos
+          with
+          [
+              T=float
+          ]
+  Shader.cpp
+  ShaderProgram.cpp
+  Sprite.cpp
+  Text.cpp
+  Texture.cpp
+  TexturedQuad.cpp
+  TileMap.cpp
+SOIL.lib(SOIL.obj) : warning LNK4075: se omite '/EDITANDCONTINUE' debido a la especificación '/OPT:ICF'
+LINK : warning LNK4098: la biblioteca predeterminada'MSVCRTD' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
+  Generando código
+  Previous IPDB not found, fall back to full compilation.
+  All 565 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Generación de código finalizada
+SOIL.lib(image_DXT.obj) : warning LNK4099: no se encontró PDB 'vc100.pdb' con 'SOIL.lib(image_DXT.obj)' o en 'C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\Release\vc100.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(image_helper.obj) : warning LNK4099: no se encontró PDB 'vc100.pdb' con 'SOIL.lib(image_helper.obj)' o en 'C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\Release\vc100.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(SOIL.obj) : warning LNK4099: no se encontró PDB 'vc100.pdb' con 'SOIL.lib(SOIL.obj)' o en 'C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\Release\vc100.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
+SOIL.lib(stb_image_aug.obj) : warning LNK4099: no se encontró PDB 'vc100.pdb' con 'SOIL.lib(stb_image_aug.obj)' o en 'C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\Release\vc100.pdb'; se vinculará el objeto sin tener en cuenta información de depuración
+  02-Bubble.vcxproj -> C:\Users\Omega\Documents\GitHub\2DGame\Game\02-Bubble\Release\02-Bubble.exe

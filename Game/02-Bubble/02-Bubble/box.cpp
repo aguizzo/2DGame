@@ -15,6 +15,7 @@
 
 void Box::init(const glm::ivec2& tileMapPos, bool inv, ShaderProgram& shaderProgram)
 {
+	inverted = inv;
 	mid = false;
 	jumpHeight = 0;
 	if (inv) spritesheet.loadFromFile("images/boxinv.png", TEXTURE_PIXEL_FORMAT_RGBA);

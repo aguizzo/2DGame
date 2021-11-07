@@ -181,7 +181,7 @@ void Player::update(int deltaTime)
 						{
 							death = true;
 						}
-						else bJumping = coldown == 0;
+						else bJumping = (coldown == 0 && cu);
 					}
 				}
 			}
@@ -217,7 +217,7 @@ void Player::update(int deltaTime)
 							death = true;
 						}
 
-						else bJumping = coldown == 0;
+						else bJumping = (coldown == 0 && cu);
 					}
 				}
 			}
@@ -352,3 +352,4 @@ void Player::setGodMode(bool b) {
 	god = b;
 }
 
+void Player::setJump(bool jmp) { bJumping = jmp; }

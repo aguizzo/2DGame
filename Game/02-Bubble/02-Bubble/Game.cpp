@@ -21,7 +21,7 @@ void Game::init()
 	engine->setSoundVolume(0.5f);
 	if (!engine)
 	{
-		printf("Could not startup engine\n");
+	printf("Could not startup engine\n");
 	}
 	engine->play2D("sounds/01_Stage_Select.mp3", true);
 }

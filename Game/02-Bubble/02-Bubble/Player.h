@@ -21,6 +21,7 @@ public:
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
 	void setContact(string side);
+	void setJump(bool jmp);
 	glm::vec2 getPosition() { return posPlayer; }
 	void setGodMode(bool b);
 	
