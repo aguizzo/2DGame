@@ -24,6 +24,7 @@ public:
 	void setJump(bool jmp);
 	glm::vec2 getPosition() { return posPlayer; }
 	void setGodMode(bool b);
+	void setDeath(bool b);
 	
 private:
 	bool bJumping;
@@ -32,8 +33,8 @@ private:
 	bool cl, cr, cu;
 	glm::ivec2 tileMapDispl, posPlayer;
 	int jumpAngle, jumpHeight, startY;
-	Texture spritesheet;
-	Sprite *sprite;
+	Texture spritesheet, explosionsheet;
+	Sprite *sprite, *deathSprite;
 	TileMap *map;
 	bool god, death, audio;
 	int timer;

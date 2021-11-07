@@ -101,7 +101,7 @@ void Scene::initLvl(int lvl) {
 			map = TileMap::createTileMap("levels/lvl02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 			setPlayerSprites(45, 8);
 			setPlayer2Sprites(45, 20);
-			setFlagSprites(6, 14);
+			setFlagSprites(6, 10);
 			setFlag2Sprites(26, 18);
 			lever = NULL;
 			box = NULL;
@@ -153,8 +153,8 @@ void Scene::reset() {
 	//map = TileMap::createTileMap("levels/lvltest.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	//setSprites();
 	initLvl(lvl);
-	Game::instance().stopSound();
-	Game::instance().playMusic("sounds/06_Guts_Man.mp3");
+	//Game::instance().stopSound();
+	//Game::instance().playMusic("sounds/06_Guts_Man.mp3");
 	camera = WORLD_WIDTH / 2;
 	scroll = 0;
 	projection = glm::ortho(float(camera - SCREEN_WIDTH / PROPORTION - scroll), float(camera + SCREEN_WIDTH / PROPORTION + scroll), float(WORLD_HEIGHT / 2 + SCREEN_HEIGHT / PROPORTION + scroll * PROPORTION), float(WORLD_HEIGHT / 2 - SCREEN_HEIGHT / PROPORTION - scroll * PROPORTION));
@@ -176,8 +176,11 @@ void Scene::update(int deltaTime)
 			glm::vec2 currPos1 = player->getPosition();
 			glm::vec2 currPos2 = player2->getPosition();
 			camera = (currPos1.x + currPos2.x) / 2;
-			if (((currPos1.y + 32 > WORLD_HEIGHT / 2 - 3) && (currPos1.y + 32 < WORLD_HEIGHT / 2 + 3)) || ((currPos2.y + 32 > WORLD_HEIGHT / 2 - 3) && (currPos2.y + 32 < WORLD_HEIGHT / 2 + 3))) 
-				reset();
+			if (((currPos1.y + 32 > WORLD_HEIGHT / 2 - 3) && (currPos1.y + 32 < WORLD_HEIGHT / 2 + 3)))
+				player->setDeath(true);
+			if (((currPos2.y + 32 > WORLD_HEIGHT / 2 - 3) && (currPos2.y + 32 < WORLD_HEIGHT / 2 + 3)))
+				player2->setDeath(true);
+				//reset();
 			bool win1 = false;
 			if (abs(currPos1.x - currPos2.x) > SCREEN_WIDTH / 1.2)
 				scroll = abs(abs(currPos1.x - currPos2.x) - SCREEN_WIDTH / 1.2) / 2;

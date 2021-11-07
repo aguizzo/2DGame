@@ -11,16 +11,16 @@ images/nivelmetal.png 					-- Tilesheet
                ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhi   
                     oo        oo        oo        
                                                   
+         ac                                       
+         df                                       
+         df              nn        nn             
+         df    abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc   
+    abbbbef    ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhi   
+    ghhhhhi                                       
                                                   
                                                   
-                         nn        nn             
                abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc   
-         ac    ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhi   
-         df                                       
-         df                                       
-         df                                       
-    abbbbef    abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc   
-    ghhhhhi    ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhi   
+               ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhi   
                     oo        oo        oo        
                                                   
                                                   

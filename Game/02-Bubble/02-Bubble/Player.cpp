@@ -13,7 +13,7 @@
 
 enum PlayerAnims
 {
-	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_RIGHT, JUMP_LEFT
+	STAND_LEFT, STAND_RIGHT, MOVE_LEFT, MOVE_RIGHT, JUMP_RIGHT, JUMP_LEFT, EXPLOSION, EXPLOSION2
 };
 
 
@@ -73,14 +73,31 @@ void Player::init(const glm::ivec2 &tileMapPos, bool inv, ShaderProgram &shaderP
 		sprite->setAnimationSpeed(JUMP_LEFT, 8);
 		sprite->addKeyframe(JUMP_LEFT, glm::vec2(0.125*6.f, 0.5f));
 
-
-
-		
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
-	
-}
+
+	explosionsheet.loadFromFile("images/explosioMega.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	deathSprite = Sprite::createSprite(glm::ivec2(72, 72), glm::vec2(0.2f, 1.f), &explosionsheet, &shaderProgram);
+	deathSprite->setNumberAnimations(1);
+		deathSprite->setAnimationSpeed(EXPLOSION, 8);
+		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.f, 0.f));
+		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.2f, 0.f));
+		deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.4f, 1.0f));
+		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.6f, 0.f));
+		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.8f, 0.f));
+	//deathSprite->setAnimationSpeed(EXPLOSION2, 8);
+		//deathSprite->addKeyframe(EXPLOSION2, glm::vec2(0.8f, 0.f));
+		//deathSprite->addKeyframe(EXPLOSION2, glm::vec2(0.6f, 0.f));
+		//deathSprite->addKeyframe(EXPLOSION2, glm::vec2(0.4f, 0.f));
+		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.2f, 0.f));
+		//deathSprite->addKeyframe(EXPLOSION, glm::vec2(0.f, 0.f));
+
+		//deathSprite->changeAnimation(EXPLOSION2);
+		deathSprite->changeAnimation(EXPLOSION);
+}		
+
 
 void Player::update(int deltaTime)
 {
@@ -289,18 +306,21 @@ void Player::update(int deltaTime)
 			//}
 		}
 		sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
+		deathSprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 	}
 	else {
-		//sprite->update(deltaTime);
+		deathSprite->update(deltaTime);
 		timer++;
 		if (!audio) {
+			deathSprite->changeAnimation(EXPLOSION);
 			Game::instance().stopSound();
 			Game::instance().playSoundEffect("sounds/08_MegamanDefeat.wav");
 			audio = true;
 		}
-		if (timer >= 120) 
+		if (timer >= 60) 
 		{
 			Game::instance().resetLvl();
+			Game::instance().playMusic("sounds/06_Guts_Man.mp3");
 			timer = 0;
 			audio = false;
 		}
@@ -309,7 +329,10 @@ void Player::update(int deltaTime)
 
 void Player::render()
 {
-	sprite->render();
+	if (!death)
+		sprite->render();
+	else
+		deathSprite->render();
 }
 
 void Player::setTileMap(TileMap *tileMap)
@@ -350,6 +373,9 @@ void Player::setContact(string s)
 
 void Player::setGodMode(bool b) {
 	god = b;
+}
+void Player::setDeath(bool b) {
+	death = b;
 }
 
 void Player::setJump(bool jmp) { bJumping = jmp; }
