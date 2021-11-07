@@ -73,13 +73,14 @@ void Player::init(const glm::ivec2 &tileMapPos, bool inv, ShaderProgram &shaderP
 	sprite->setAnimationSpeed(JUMP_LEFT, 8);
 	sprite->addKeyframe(JUMP_LEFT, glm::vec2(0.125 * 6.f, 1 / 3.f));
 
-	sprite->setAnimationSpeed(EXPLOSION, 4);
+	sprite->setAnimationSpeed(EXPLOSION, 5);
 	sprite->addKeyframe(EXPLOSION, glm::vec2(0.f, 2/3.f));
 	sprite->addKeyframe(EXPLOSION, glm::vec2(0.125f, 2 / 3.f));
 	sprite->addKeyframe(EXPLOSION, glm::vec2(0.250f, 2 / 3.f));
 	sprite->addKeyframe(EXPLOSION, glm::vec2(0.375f, 2 / 3.f));
 	sprite->addKeyframe(EXPLOSION, glm::vec2(0.5f, 2 / 3.f));
 	sprite->addKeyframe(EXPLOSION, glm::vec2(0.625f, 2 / 3.f));
+	sprite->addKeyframe(EXPLOSION, glm::vec2(0.750f, 2 / 3.f));
 
 	sprite->changeAnimation(0);
 	tileMapDispl = tileMapPos;
