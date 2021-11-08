@@ -156,8 +156,8 @@ void Scene::reset() {
 	//map = TileMap::createTileMap("levels/lvltest.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	//setSprites();
 	initLvl(lvl);
-	Game::instance().stopSound();
-	Game::instance().playMusic("sounds/06_Guts_Man.mp3");
+	//Game::instance().stopSound();
+	//Game::instance().playMusic("sounds/06_Guts_Man.mp3");
 	camerax = WORLD_WIDTH / 2;
 	cameray = WORLD_HEIGHT / 2;
 	scroll = 0;
