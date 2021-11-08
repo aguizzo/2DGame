@@ -1,3 +1,8 @@
-# 2DGame
+# 2DGame  QT 2021 - 2022
 
-Alfa version
+VJ - FIB
+
+Authors:
+
+Óscar Polonio
+Andrés Güizzo
