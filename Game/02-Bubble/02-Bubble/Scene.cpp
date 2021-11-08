@@ -90,8 +90,8 @@ void Scene::initLvl(int lvl) {
 		case 1: 
 		{
 			map = TileMap::createTileMap("levels/lvl01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-			setPlayerSprites(5, 8);
-			setPlayer2Sprites(5, 20);
+			setPlayerSprites(5, 10);
+			setPlayer2Sprites(5, 19);
 			setFlagSprites(26, 11);
 			setFlag2Sprites(37, 16);
 			lever = NULL;
@@ -104,7 +104,7 @@ void Scene::initLvl(int lvl) {
 			map = TileMap::createTileMap("levels/lvl02.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 			setPlayerSprites(45, 8);
 			setPlayer2Sprites(45, 20);
-			setFlagSprites(6, 14);
+			setFlagSprites(6, 10);
 			setFlag2Sprites(26, 18);
 			lever = NULL;
 			box = NULL;
@@ -180,17 +180,14 @@ void Scene::update(int deltaTime)
 			glm::vec2 currPos1 = player->getPosition();
 			glm::vec2 currPos2 = player2->getPosition();
 			int displ = -(WORLD_WIDTH / 2 - currPos1.x);
-			
+
 			camerax = (currPos1.x + currPos2.x) / 2;
 			cameray = (currPos1.y + currPos2.y) / 2;
-			/*
-			if ((currPos1.x > camera + abs(currPos1.x - currPos2.x)) || (currPos2.x > camera + abs(currPos1.x - currPos2.x)))
-				camera += 6;
-			if ((currPos1.x < camera - abs(currPos1.x - currPos2.x)) || (currPos2.x < camera - abs(currPos1.x - currPos2.x)))
-				camera -= 6;
-			*/
-			if (((currPos1.y + 32 > WORLD_HEIGHT / 2 - 3) && (currPos1.y + 32 < WORLD_HEIGHT / 2 + 3)) || ((currPos2.y + 32 > WORLD_HEIGHT / 2 - 3) && (currPos2.y + 32 < WORLD_HEIGHT / 2 + 3))) 
-				reset();
+			if (((currPos1.y + 32 > WORLD_HEIGHT / 2 - 3) && (currPos1.y + 32 < WORLD_HEIGHT / 2 + 3)))
+				player->setDeath(true);
+			if (((currPos2.y + 32 > WORLD_HEIGHT / 2 - 3) && (currPos2.y + 32 < WORLD_HEIGHT / 2 + 3)))
+				player2->setDeath(true);
+				//reset();
 			bool win1 = false;
 			if (abs(currPos1.x - currPos2.x) > SCREEN_WIDTH / 1.2)
 				scroll = abs(abs(currPos1.x - currPos2.x) - SCREEN_WIDTH / 1.2) / 2;

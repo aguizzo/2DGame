@@ -24,6 +24,7 @@ public:
 	void setJump(bool jmp);
 	glm::vec2 getPosition() { return posPlayer; }
 	void setGodMode(bool b);
+	void setDeath(bool b);
 	
 private:
 	bool bJumping;
