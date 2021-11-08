@@ -58,7 +58,7 @@ void Credits::render()
 	text.render("A GAME INSPIRED IN SISAO, DEVELOPED BY", glm::vec2(200, 170), 14, glm::vec4(1, 1, 1, 1));
 	text.render("Havana 24", glm::vec2(390, 200), 14, glm::vec4(1, 1, 1, 1));
 	text.render("DEVELOPER TEAM STAFF", glm::vec2(310, 270), 14, glm::vec4(1, 1, 1, 1));
-	text.render("Oscar Poloniov", glm::vec2(360, 300), 14, glm::vec4(1, 1, 1, 1));
+	text.render("Oscar Polonio", glm::vec2(360, 300), 14, glm::vec4(1, 1, 1, 1));
 	text.render("Andres Guizzo", glm::vec2(360, 330), 14, glm::vec4(1, 1, 1, 1));
 	text.render("MUSIC BY", glm::vec2(390, 370), 14, glm::vec4(1, 1, 1, 1));
 	text.render("Manami Matsumae", glm::vec2(360, 400), 14, glm::vec4(1, 1, 1, 1));

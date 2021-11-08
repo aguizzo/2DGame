@@ -37,15 +37,15 @@ private:
 	void setPlayer2Sprites(int x, int y);
 	void setFlagSprites(int x, int y);
 	void setFlag2Sprites(int x, int y);
-	void setLeverSprites(int x, int y);
-	void setBoxSprites(int x, int y);
+	void setLeverSprites(int x, int y, bool inv);
+	void setBoxSprites(int x, int y, bool inv);
 	void setMap();
 	void initLvl(int lvl);
 	void leverActivate();
 	void removeBarrier();
-	void setPressurePlateSprites();
-	void setPortalSprites();
-	void setPortalSprites2();
+	void setPressurePlateSprites(int x, int y, bool inv);
+	void setPortalSprites(int x, int y, bool inv, bool side);
+	void setPortalSprites2(int x, int y, bool inv, bool side);
 	
 private:
 	TileMap *map;
@@ -62,10 +62,10 @@ private:
 	float currentTime;
 	glm::mat4 projection;
 	int flag_x, flag2_x, flag_y, flag2_y;
-	int SceneState, PlayerState, camera, scroll;
+	int SceneState, PlayerState, camerax, cameray, scroll;
 	bool leverActivated, touchingPortal, pplateActivated;
-	TexturedQuad* background;
-	Texture bgImage;
+	TexturedQuad *background, *space;
+	Texture bgImage, bgImage2;
 	bool audio;
 	int count;
 	int lvl;

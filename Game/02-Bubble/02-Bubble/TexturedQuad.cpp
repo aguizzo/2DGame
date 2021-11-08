@@ -44,4 +44,3 @@ void TexturedQuad::free()
 {
 	glDeleteBuffers(1, &vbo);
 }
-
