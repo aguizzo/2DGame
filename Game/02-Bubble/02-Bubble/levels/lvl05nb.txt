@@ -21,7 +21,7 @@ images/nivelmetal.png 					-- Tilesheet
   demhhhhhhhlemhhhhhhhhhhhhi         ghhhhhhlf    
   def       def                             df    
   def       ghi                             df    
-  def                                       df    
+  def                                       gi    
   dekbbbbc                                        
   demhhhhi       abbbbbbbbbbc                     
   def            ghhhhhhhhhhi      abbbbc         

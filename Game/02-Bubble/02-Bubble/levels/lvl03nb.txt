@@ -15,12 +15,12 @@ images/nivelmetal.png 					-- Tilesheet
             df       ghhhhi      ac               
             df                   gi               
             dfnnn                                 
-    abbbbbbbeebbbbbbbbbbbbbc                      
+    abbbbbbbjebbkbbbbbbbbbbc                      
     ghhhhhhhhhhhhhhhhhhhhhhi                      
                                                   
                                                   
             abbbbbbbbbbbbbbc                      
-            dehhhhhhhhhhhhhi                      
+            dmhhhhhhhhhhhhhi                      
             df                                    
             df                   ac     abbbbbbc  
             df                   gi     ghhhhhhi  
