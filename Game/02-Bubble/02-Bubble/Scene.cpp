@@ -299,7 +299,7 @@ void Scene::update(int deltaTime)
 				Game::instance().playSoundEffect("sounds/10_Victory!.mp3");
 				audio = true;
 			}
-			if (count >= 420) {
+			if (count >= 350) {
 				if (lvl == 5) {
 					Game::instance().changeState('C');
 					lvl = 1;
@@ -564,12 +564,14 @@ void Scene::collisions() {
 				if (portal2->getSide()) player->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
 				else player->setPosition(portal2p);
 				player->setJump(false);
+				Game::instance().playSoundEffect("sounds/04_MegamanWarp.wav");
 			}
 			else if (!touchingPortal && distr2 <= 6 && distr2 >= -6 && (player2p.y + 36 >= portalp.y) && (player2p.y + 36 <= portalp.y + 72)) {
 				touchingPortal = true;
 				if (portal2->getSide()) player2->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
 				else player2->setPosition(portal2p);
 				player2->setJump(false);
+				Game::instance().playSoundEffect("sounds/04_MegamanWarp.wav");
 			}
 			else touchingPortal = false;
 		}
@@ -581,12 +583,14 @@ void Scene::collisions() {
 				if (portal2->getSide()) player->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
 				else player->setPosition(portal2p);
 				player->setJump(false);
+				Game::instance().playSoundEffect("sounds/04_MegamanWarp.wav");
 			}
 			else if (!touchingPortal && distl2 <= 6 && distl2 >= -6 && (player2p.y + 36 >= portalp.y) && (player2p.y + 36 <= portalp.y + 72)) {
 				touchingPortal = true;
 				if (portal2->getSide()) player2->setPosition(glm::ivec2(portal2p.x - 36, portal2p.y));
 				else player2->setPosition(portal2p);
 				player2->setJump(false);
+				Game::instance().playSoundEffect("sounds/04_MegamanWarp.wav");
 			}
 			else touchingPortal = false;
 		}
@@ -600,12 +604,14 @@ void Scene::collisions() {
 					if (portal->getSide()) player->setPosition(glm::ivec2(portalp.x - 36, portalp.y));
 					else player->setPosition(portalp);
 					player->setJump(false);
+					Game::instance().playSoundEffect("sounds/04_MegamanWarp.wav");
 				}
 				else if (!touchingPortal && distr2 <= 6 && distr2 >= -6 && (player2p.y + 36 >= portal2p.y) && (player2p.y + 36 <= portal2p.y + 72)) {
 					touchingPortal = true;
 					if (portal->getSide()) player2->setPosition(glm::ivec2(portalp.x - 36, portalp.y));
 					else player2->setPosition(portalp);
 					player2->setJump(false);
+					Game::instance().playSoundEffect("sounds/04_MegamanWarp.wav");
 				}
 				else touchingPortal = false;
 			}
@@ -617,12 +623,14 @@ void Scene::collisions() {
 					if (portal->getSide()) player->setPosition(glm::ivec2(portalp.x - 36, portalp.y));
 					else player->setPosition(portalp);
 					player->setJump(false);
+					Game::instance().playSoundEffect("sounds/04_MegamanWarp.wav");
 				}
 				else if (!touchingPortal && distl2 <= 6 && distl2 >= -6 && (player2p.y + 36 >= portal2p.y) && (player2p.y + 36 <= portal2p.y + 72)) {
 					touchingPortal = true;
 					if (portal->getSide()) player2->setPosition(glm::ivec2(portalp.x - 36, portalp.y));
 					else player2->setPosition(portalp);
 					player2->setJump(false);
+					Game::instance().playSoundEffect("sounds/04_MegamanWarp.wav");
 				}
 				else touchingPortal = false;
 			}
