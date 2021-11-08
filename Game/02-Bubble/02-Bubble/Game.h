@@ -64,6 +64,7 @@ private:
 	HowToPlay howTo;
 	Credits credits;
 	irrklang::ISoundEngine* engine;
+	bool audio;
 };
 
 

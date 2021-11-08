@@ -23,6 +23,7 @@ void Game::init()
 	{
 	printf("Could not startup engine\n");
 	}
+	audio = true;
 	engine->play2D("sounds/01_Stage_Select.mp3", true);
 }
 
@@ -73,6 +74,7 @@ void Game::changeState(char c)
 		case 'M': 
 		{
 			State = MENU;
+			if (audio) 
 			engine->stopAllSounds();
 			engine->play2D("sounds/01_Stage_Select.mp3", true);
 			break;
@@ -109,8 +111,21 @@ void Game::keyPressed(int key)
 	if(key == 27) // Escape code
 		bPlay = false;
 	if (key == 'm')
-		engine->stopAllSounds();
-	
+	{ 
+		keyReleased('m');
+		if (audio)
+		{
+			//engine->stopAllSounds();
+			engine->setSoundVolume(0.0f);
+			audio = false;
+		}
+		else 
+		{
+			engine->setSoundVolume(0.5f);
+			audio = true;
+		}
+	}
+		
 	//if (key == 13)
 		
 	//this->init();
@@ -158,18 +173,20 @@ void Game::setSpecialKey(int key) {
 	specialKeyReleased(key);
 }
 
-void Game::playSoundEffect(string effect) {
+void Game::playSoundEffect(string effect)
+{
 	char const* c = effect.data();
 	engine->play2D(c, false);
 }
 
 void Game::playMusic(string track) {
-	char const* c = track.data();
-	engine->play2D(c, true);
+		char const* c = track.data();
+		engine->play2D(c, true);	
 }
 
 
-void Game::stopSound() {
+void Game::stopSound() 
+{
 	engine->stopAllSounds();
 }
 
