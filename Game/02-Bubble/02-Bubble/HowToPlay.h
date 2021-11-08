@@ -20,9 +20,9 @@ private:
 private:
 	ShaderProgram texProgram;
 	float currentTime;
-	TexturedQuad* background, *arrows, *up;
+	TexturedQuad* background, *arrows, *up, *flag, *flag2;
 	glm::mat4 projection;
-	Texture bgImage, arrowsImg, upImg;
+	Texture bgImage, arrowsImg, upImg, flagImg;
 	Text text;
 };
 

@@ -55,9 +55,12 @@ void HowToPlay::render()
 	background->render(bgImage);
 	arrows->render(arrowsImg);
 	up->render(upImg);
+	flag->render(flagImg);
+	flag2->render(flagImg);
 	text.render("How to Play ", glm::vec2(320, 80), 30, glm::vec4(1, 1, 1, 1));
 	text.render("Move right or left", glm::vec2(400, 200), 14, glm::vec4(1, 1, 1, 1));
 	text.render("Jump", glm::vec2(400, 260), 14, glm::vec4(1, 1, 1, 1));
+	text.render("Reach the two flags", glm::vec2(400, 330), 14, glm::vec4(1, 1, 1, 1));
 	text.render("Press b to go back", glm::vec2(340, 400), 14, glm::vec4(1, 1, 1, 1));
 }
 
@@ -108,4 +111,15 @@ void HowToPlay::initImages()
 	glm::vec2 texCoords3[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
 	up = TexturedQuad::createTexturedQuad(geom3, texCoords3, texProgram);
 	upImg.loadFromFile("images/up.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
+	glm::vec2 geom4[2] = { glm::vec2(340.f, 300.f), glm::vec2(18.f + 340.f, 36.f + 300.f) };
+	glm::vec2 texCoords4[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+	flag = TexturedQuad::createTexturedQuad(geom4, texCoords4, texProgram);
+
+	glm::vec2 geom5[2] = { glm::vec2(700.f, 320.f), glm::vec2(18.f + 700.f, 36.f + 320.f) };
+	glm::vec2 texCoords5[2] = { glm::vec2(0.f, 0.f), glm::vec2(1.f, 1.f) };
+	flag2 = TexturedQuad::createTexturedQuad(geom5, texCoords5, texProgram);
+
+	flagImg.loadFromFile("images/flag1.png", TEXTURE_PIXEL_FORMAT_RGBA);
+
 }
