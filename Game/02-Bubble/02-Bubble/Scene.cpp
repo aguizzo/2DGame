@@ -124,12 +124,12 @@ void Scene::initLvl(int lvl) {
 		case 4:
 		{
 			map = TileMap::createTileMap("levels/lvl04.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-			setPlayerSprites(18, 9);
-			setPlayer2Sprites(18, 20);
-			setFlagSprites(10, 10);
-			setFlag2Sprites(44, 21);
-			setLeverSprites(6, 11,false);
-			setBoxSprites(21, 20,true);
+			setPlayerSprites(26, 9);
+			setPlayer2Sprites(26, 17);
+			setFlagSprites(41, 11);
+			setFlag2Sprites(6, 16);
+			setBoxSprites(23, 16,true);
+			lever = NULL;
 			break;
 		}
 		case 5:
@@ -300,8 +300,10 @@ void Scene::update(int deltaTime)
 				audio = true;
 			}
 			if (count >= 420) {
-				if (lvl == 5)
+				if (lvl == 5) {
 					Game::instance().changeState('C');
+					lvl = 1;
+				}
 				else
 				{
 					lvl++;
@@ -435,6 +437,7 @@ void Scene::setPressurePlateSprites(int x, int y, bool inv)
 void Scene::setLeverSprites(int x, int y, bool inv)
 {
 	lever = new Lever();
+	leverActivated = false;
 	lever->init(glm::ivec2(SCREEN_X, SCREEN_Y), inv, texProgram);
 	lever->setPosition(glm::vec2(x * map->getTileSize(), y * map->getTileSize()));
 	lever->setTileMap(map);

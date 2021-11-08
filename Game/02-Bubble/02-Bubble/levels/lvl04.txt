@@ -7,21 +7,21 @@ images/nivelmetal.png 					-- Tilesheet
                                                   
                                                   
                                                   
+                           abbbc    abbc  ac      
+                           ghhhi    df    df      
+                  abbbc             df    df      
+                  ghhhi             df  abjf      
+         abbbc                      df  ghlf      
+         ghhhi                      df    df      
+                                    df    df      
+                abbbc               dkbc  df      
+                deeef               ghhf  df      
+   abbbbbbbbbbbbjeeekbbbbbbbbc         dbbjf      
+   deeeeeeeeeeeeeeeeeeeeeeeeef         deeef      
+   ghhhhhhhhhhhhhhhlmhhhhhhhhi         ghhhi      
+                   df                             
+                   gi                             
                                                   
-                                                  
-                                                  
-                                                  
-                                                  
-                                                  
-                                                  
-            b               b                     
-            b               b                     
-            b               b                     
-           abbbbbbbbbbbbbbbbbbbbbbbbbc            
-           ghhhh  hhhhhhhhhhhhhhhhhhhi            
-              hh                                  
-                                                  
-                  hhhhhhhhhhhhhhhhhhhhh           
                                                   
                                                   
                                                   
