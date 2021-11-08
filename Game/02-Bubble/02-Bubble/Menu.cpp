@@ -70,7 +70,8 @@ void Menu::update(int deltaTime) {
 		case 2:
 			Game::instance().changeState('C');
 			break;
-		}		
+		}	
+
 	}
 }
 
@@ -84,7 +85,7 @@ void Menu::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	background->render(bgImage);
-	text.render("NAMEGEM", glm::vec2(260, 200), 64, glm::vec4(0, 0, 1, 1));
+	text.render("NAMAGEM", glm::vec2(260, 200), 64, glm::vec4(0, 0, 1, 1));
 	updateMenuOptions();
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
