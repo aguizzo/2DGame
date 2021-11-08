@@ -14,20 +14,30 @@ class Player
 {
 
 public:
-	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
+	void init(const glm::ivec2 &tileMapPos, bool inverted, ShaderProgram &shaderProgram);
 	void update(int deltaTime);
 	void render();
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
+	void setContact(string side);
+	void setJump(bool jmp);
+	glm::vec2 getPosition() { return posPlayer; }
+	void setGodMode(bool b);
+	void setDeath(bool b);
 	
 private:
 	bool bJumping;
+	bool fstjump = true;
+	bool inverted;
+	bool cl, cr, cu;
 	glm::ivec2 tileMapDispl, posPlayer;
-	int jumpAngle, startY;
+	int jumpAngle, jumpHeight, startY;
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
+	bool god, death, audio;
+	int timer;
 
 };
 
