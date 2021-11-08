@@ -7,3 +7,7 @@ Authors:
 Óscar Polonio
 
 Andrés Güizzo
+
+
+Game inspired in Sisâo: https://www.havana24.net/index.php?pag=play&sub=sisao
+
