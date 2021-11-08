@@ -1,13 +1,15 @@
-# 2DGame  QT 2021 - 2022
+# JUEGO 2D  QT 2021 - 2022
 
 VJ - FIB
 
-Authors:
+# NAMAGEM 
+
+Autores:
 
 Óscar Polonio
 
 Andrés Güizzo
 
 
-Game inspired in Sisâo: https://www.havana24.net/index.php?pag=play&sub=sisao
+Juego inspirado en Sisâo: https://www.havana24.net/index.php?pag=play&sub=sisao
 
